@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   ArrowLeft,
   ArrowRight,
@@ -22,6 +22,87 @@ const CALENDLY_LINK = 'https://calendly.com/g-schmittberger'
 const UNBIASED_LINK = 'https://www.unbiasedventures.ch/'
 const DRISK_LINK = 'https://dri.ai/drisk-it'
 const EQUISY_LINK = 'https://equisy.io/'
+
+
+const AFFILIATIONS = {
+  memberships: [
+    {
+      key: 'bvii',
+      title: 'Bundesverband Impact Investing',
+      subtitle: 'Membership',
+      description: 'German impact investing association focused on promoting impact investing, knowledge-building, partnerships, and suitable framework conditions.',
+      href: 'https://bundesinitiative-impact-investing.org/en/',
+      previewHref: 'https://bundesinitiative-impact-investing.org/en/',
+      source: 'turn656799view0',
+    },
+    {
+      key: 'tti',
+      title: 'Top Tier Impact',
+      subtitle: 'Ambassador for the Frankfurt Area',
+      description: 'Global ecosystem of investors, entrepreneurs, and corporate leaders with a private network, investing activity, and advisory work.',
+      href: 'https://www.toptierimpact.com/',
+      previewHref: 'https://www.toptierimpact.com/',
+      source: 'turn656799view1',
+    },
+    {
+      key: 'catalyst',
+      title: 'Catalyst Now',
+      subtitle: 'Member',
+      description: 'Global movement and collaboration platform for social innovators and systems-change actors.',
+      href: 'https://catalystnow.net/',
+      previewHref: 'https://catalystnow.net/',
+      source: 'turn420819view0',
+    },
+  ],
+  partners: [
+    {
+      key: 'csg',
+      title: 'capitalism & the social good group',
+      subtitle: 'Selected partnership',
+      description: 'Advisory group focused on innovation, sustainability, and stakeholder-oriented value creation.',
+      href: 'https://www.csg-group.org/',
+      previewHref: 'https://www.csg-group.org/',
+      personName: 'Diane Kaldany',
+      personHref: 'https://www.linkedin.com/in/dianekaldany/',
+      source: 'turn420819view1',
+    },
+    {
+      key: 'tbs',
+      title: 'Transnational Business Solutions',
+      subtitle: 'Selected partnership',
+      description: 'Cross-border business and advisory collaboration associated with Sumantra Sen.',
+      href: 'https://www.transbizsolution.com/',
+      previewHref: 'https://www.transbizsolution.com/',
+      personName: 'Sumantra Sen',
+      personHref: 'https://www.linkedin.com/in/sumantra63/',
+      source: '',
+    },
+    {
+      key: 'umergence',
+      title: 'Umergence',
+      subtitle: 'Selected partnership',
+      description: 'Capital raising and advisory platform with a seasoned team active across private capital relationships.',
+      href: 'https://www.umergence.com/',
+      previewHref: 'https://www.umergence.com/',
+      personName: 'Will Hogan',
+      personHref: 'https://www.linkedin.com/in/willhogan/',
+      source: 'turn420819view2',
+    },
+    {
+      key: 'bonomics',
+      title: 'Bonomics',
+      subtitle: 'Selected partnership',
+      description: 'Strategic finance and fractional CFO-style advisory focused on clarity, growth, and decision support.',
+      href: 'https://bonomics.wixsite.com/bonomics',
+      previewHref: 'https://bonomics.wixsite.com/bonomics',
+      personName: 'René Bonomi',
+      personHref: 'https://www.linkedin.com/in/renebonomi/',
+      source: 'turn420819view3',
+    },
+  ],
+}
+
+const EMBED_NOTE = 'Some external sites — especially LinkedIn and some company sites — may block in-site preview windows because of their security settings. In that case, use the direct link.'
 
 // Replace these after you create the Stripe payment links.
 const STRIPE_LINKS = {
@@ -245,6 +326,8 @@ export default function App() {
   const packagePage = packageKey ? packageDetails[packageKey] : null
   const rootPath = typeof window !== 'undefined' ? window.location.pathname || '/' : '/'
   const homeHref = (hash = '') => `${rootPath}${hash}`
+  const [previewItem, setPreviewItem] = useState(null)
+  const allAffiliations = useMemo(() => [...AFFILIATIONS.memberships, ...AFFILIATIONS.partners], [])
 
   return (
     <div className="site-shell">
@@ -1063,6 +1146,52 @@ export default function App() {
               </div>
             </section>
 
+
+
+            <section id="network" className="page-section">
+              <div className="wrap stack">
+                <SectionTitle eyebrow="Memberships & selected partnerships" title="Credibility, network access, and aligned collaboration" text="These memberships and selected partnerships strengthen positioning, signal ecosystem access, and help explain the broader context in which Bridge4Impact operates." />
+                <p className="network-note">
+                  My recommendation is to present them in two clearly separated groups: memberships and selected partnerships. That keeps the message credible and avoids any impression that every organization is formally endorsing every service on this site. Some external sites can be previewed inside the website window; others may block this for security reasons.
+                </p>
+
+                <div className="network-grid">
+                  <h3 className="network-subtitle">Memberships</h3>
+                  <div className="network-cards">
+                    {AFFILIATIONS.memberships.map((item) => (
+                      <Card key={item.key} className="network-card">
+                        <div className="network-tag">{item.subtitle}</div>
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        <div className="network-actions">
+                          <button className="button button-secondary" type="button" onClick={() => setPreviewItem(item)}>View in website window</button>
+                          <a className="button button-primary" href={item.href} target="_blank" rel="noopener noreferrer">Open site</a>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="network-grid">
+                  <h3 className="network-subtitle">Selected partnerships</h3>
+                  <div className="network-cards">
+                    {AFFILIATIONS.partners.map((item) => (
+                      <Card key={item.key} className="network-card">
+                        <div className="network-tag">{item.subtitle}</div>
+                        <h3>{item.title}</h3>
+                        <p>{item.description}</p>
+                        <div className="network-actions">
+                          <button className="button button-secondary" type="button" onClick={() => setPreviewItem(item)}>View in website window</button>
+                          <a className="button button-primary" href={item.href} target="_blank" rel="noopener noreferrer">Open site</a>
+                          {item.personHref ? <a className="button button-secondary" href={item.personHref} target="_blank" rel="noopener noreferrer">Open {item.personName}</a> : null}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
             <section id="packages" className="page-section">
               <div className="wrap stack">
                 <SectionTitle eyebrow="Packages" title="Choose the right starting package" text="Start with a compact overview here. Each package also has its own dedicated detail page with fuller explanation, CTA, and payment logic." />
@@ -1251,6 +1380,37 @@ export default function App() {
             </section>
           </>
         )}
+
+          {previewItem ? (
+            <div className="preview-backdrop" role="dialog" aria-modal="true" aria-label={previewItem.title} onClick={() => setPreviewItem(null)}>
+              <div className="preview-dialog" onClick={(e) => e.stopPropagation()}>
+                <div className="preview-head">
+                  <div>
+                    <div className="eyebrow">Preview window</div>
+                    <h3>{previewItem.title}</h3>
+                  </div>
+                  <button className="button button-secondary" type="button" onClick={() => setPreviewItem(null)}>
+                    <ArrowLeft size={18} /> Close
+                  </button>
+                </div>
+                <div className="preview-body">
+                  <div className="preview-side">
+                    <div className="network-tag">{previewItem.subtitle}</div>
+                    <p>{previewItem.description}</p>
+                    <p>{EMBED_NOTE}</p>
+                    <div className="network-actions">
+                      <a className="button button-primary" href={previewItem.href} target="_blank" rel="noopener noreferrer">Open original site</a>
+                      {previewItem.personHref ? <a className="button button-secondary" href={previewItem.personHref} target="_blank" rel="noopener noreferrer">Open {previewItem.personName}</a> : null}
+                    </div>
+                  </div>
+                  <div className="preview-frame-wrap">
+                    {previewItem.previewHref ? <iframe className="preview-frame" title={previewItem.title} src={previewItem.previewHref} /> : <div className="preview-fallback">This item does not have an embeddable preview link configured. Use the direct links on the left.</div>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
       </main>
 
       <footer className="footer">
