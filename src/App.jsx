@@ -24,9 +24,9 @@ const DRISK_LINK = 'https://dri.ai/drisk-it'
 
 // Replace these after you create the Stripe payment links.
 const STRIPE_LINKS = {
-  readiness: 'REPLACE_STRIPE_READINESS_AUDIT_LINK',
-  workflow: 'REPLACE_STRIPE_WORKFLOW_SPRINT_LINK',
-  advisoryDeposit: 'REPLACE_STRIPE_ADVISORY_DEPOSIT_LINK',
+  readiness: 'https://buy.stripe.com/fZueVdePFgZX3NR6C6eZ200',
+  workflow: 'https://buy.stripe.com/fZu4gzgXN2538476C6eZ201',
+  advisoryDeposit: 'https://buy.stripe.com/aFaeVdazp6ljbgjd0ueZ202',
 }
 
 const services = [
@@ -259,10 +259,10 @@ export default function App() {
           --line-soft: rgba(255,255,255,0.10);
           --shadow: 0 24px 60px rgba(0,0,0,0.14);
           --header-h: 84px;
-          --max-w: 1380px;
+          --max-w: 1440px;
           --gutter: 28px;
-          --section-bottom: 44px;
-          --section-top: 16px;
+          --section-bottom: 36px;
+          --section-top: 10px;
           --gap: 18px;
         }
 
@@ -271,7 +271,7 @@ export default function App() {
           margin: 0;
           padding: 0;
           scroll-behavior: smooth;
-          scroll-padding-top: calc(var(--header-h) + 2px);
+          scroll-padding-top: calc(var(--header-h) + 8px);
         }
         body {
           margin: 0;
@@ -361,7 +361,7 @@ export default function App() {
           z-index: 1;
           padding-top: var(--header-h);
         }
-        section[id] { scroll-margin-top: calc(var(--header-h) + 2px); }
+        section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
         .page-section {
           min-height: calc(100svh - var(--header-h));
           padding: var(--section-top) 0 var(--section-bottom);
@@ -380,10 +380,10 @@ export default function App() {
           font-size: clamp(2.3rem, 4.1vw, 3.9rem);
           line-height: 1.03;
           letter-spacing: -0.045em;
-          max-width: 14ch;
+          max-width: 22ch;
         }
         .section-title p {
-          max-width: 62ch;
+          max-width: 76ch;
           margin: 14px 0 0;
           color: rgba(246,240,230,0.76);
           line-height: 1.62;
@@ -449,7 +449,7 @@ export default function App() {
         }
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
           gap: 28px;
           align-items: start;
         }
@@ -458,10 +458,10 @@ export default function App() {
           gap: 18px;
         }
         .hero-title {
-          font-size: clamp(3.15rem, 5.4vw, 5.7rem);
+          font-size: clamp(3.2rem, 5.6vw, 6rem);
           line-height: 0.93;
           letter-spacing: -0.06em;
-          max-width: 9.5ch;
+          max-width: 12ch;
         }
         .hero-title .line { display: block; }
         .lead {
@@ -605,7 +605,7 @@ export default function App() {
           font-size: clamp(2.5rem, 4.6vw, 4.6rem);
           line-height: 0.98;
           letter-spacing: -0.05em;
-          max-width: 11ch;
+          max-width: 15ch;
         }
         .detail-meta {
           display: grid;
@@ -797,7 +797,7 @@ export default function App() {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
           .hero-title { font-size: clamp(2.9rem, 8vw, 4.6rem); }
-          .section-title h2 { max-width: 18ch; }
+          .section-title h2 { max-width: 22ch; }
         }
         @media (max-width: 640px) {
           :root {
@@ -806,7 +806,7 @@ export default function App() {
             --section-top: 10px;
             --section-bottom: 34px;
           }
-          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: 10ch; }
+          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: 11ch; }
           .lead { font-size: 1rem; }
           .button { width: 100%; }
           .services-grid,
@@ -931,9 +931,8 @@ export default function App() {
                   <div className="hero-copy">
                     <div className="pill"><Sparkles size={15} />Investment readiness first. Outreach second.</div>
                     <h1 className="hero-title">
-                      <span className="line">Bridging strong</span>
-                      <span className="line">impact ventures</span>
-                      <span className="line">with the</span>
+                      <span className="line">Bridging strong impact</span>
+                      <span className="line">ventures with the</span>
                       <span className="line">right capital.</span>
                     </h1>
                     <p className="lead">
@@ -1048,7 +1047,7 @@ export default function App() {
 
             <section id="packages" className="page-section">
               <div className="wrap stack">
-                <SectionTitle eyebrow="Packages" title="Choose a package overview first — then open the detailed package page" text="The overview below stays compact. Each package has its own dedicated detail page so the explanation, CTA, and payment logic stay clear." />
+                <SectionTitle eyebrow="Packages" title="Choose the right starting package" text="Start with a compact overview here. Each package also has its own dedicated detail page with fuller explanation, CTA, and payment logic." />
                 <div className="packages-grid">
                   {packageOverview.map((pkg) => {
                     const Icon = pkg.icon
