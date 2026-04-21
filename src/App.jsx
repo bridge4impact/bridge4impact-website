@@ -19,6 +19,8 @@ import {
   Users,
 } from 'lucide-react'
 
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const services = [
   {
     icon: Search,
@@ -60,7 +62,7 @@ const readinessSteps = [
   {
     icon: Mail,
     title: 'Send both reports by email',
-    text: 'Please send both reports by email to guenter@bridge4impact.com before requesting a first fundraising meeting.',
+    text: 'Send both completed reports to guenter@bridge4impact.com before requesting a first fundraising meeting.',
     cta: 'Email the reports',
     href: 'mailto:guenter@bridge4impact.com',
   },
@@ -73,7 +75,7 @@ const readinessBands = [
   },
   {
     title: '65%–79%',
-    text: 'Often a good basis for targeted readiness improvement first.',
+    text: 'Often a good basis for targeted readiness improvement before outreach.',
   },
   {
     title: 'Below 65%',
@@ -137,13 +139,15 @@ const faqs = [
   },
   {
     q: 'When should we talk?',
-    a: 'Usually after the pre-check or before broad investor outreach starts. Early conversations often save substantial time, effort, and reputation.',
+    a: 'Usually after completing the pre-check or before broad investor outreach starts. Early conversations often save substantial time, effort, and reputation.',
   },
   {
     q: 'Can you work internationally?',
     a: 'Yes. The positioning and investor-targeting approach is designed for cross-border fundraising contexts and international collaboration.',
   },
 ]
+
+// ─── Layout helpers ───────────────────────────────────────────────────────────
 
 function SectionTitle({ eyebrow, title, text }) {
   return (
@@ -159,33 +163,44 @@ function Card({ children, className = '' }) {
   return <div className={`card ${className}`.trim()}>{children}</div>
 }
 
+// ─── App ──────────────────────────────────────────────────────────────────────
+
 export default function App() {
   return (
     <div className="site-shell">
-      <div className="background-glow" />
+      <div className="background-glow" aria-hidden="true" />
 
       <style>{`
+        /* ── Design tokens ─────────────────────────────────────── */
         :root {
-          --bg: #0b8f90;
-          --bg-deep: #0a7d7f;
-          --bg-soft: rgba(255,255,255,0.07);
-          --bg-softer: rgba(255,255,255,0.05);
-          --cream: #f6f0e6;
-          --text-dark: #0b8f90;
-          --line: rgba(255,255,255,0.13);
-          --line-soft: rgba(255,255,255,0.10);
-          --shadow: 0 24px 60px rgba(0,0,0,0.14);
-          --header-h: 82px;
-          --gutter: 64px;
-          --section-gap: 18px;
+          --bg:          #0b8f90;
+          --bg-deep:     #0a7d7f;
+          --cream:       #f6f0e6;
+          --text-dark:   #0b8f90;
+          --line:        rgba(255,255,255,0.13);
+          --line-soft:   rgba(255,255,255,0.10);
+          --shadow:      0 24px 60px rgba(0,0,0,0.14);
+
+          /* ── Single layout constants ─────────────────────────── */
+          --header-h:    82px;
+          --max-w:       1280px;
+          --gutter:      48px;          /* side space each side   */
+          --section-py:  72px;          /* vertical section pad   */
+          --gap:         16px;          /* standard grid gap      */
         }
 
+        /* ── Reset / base ──────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         html {
-          scroll-padding-top: calc(var(--header-h) + 10px);
+          scroll-behavior: smooth;
+          /* sections land exactly below the fixed header */
+          scroll-padding-top: calc(var(--header-h) + 12px);
         }
 
         body {
           overflow-x: hidden;
+          font-family: system-ui, -apple-system, sans-serif;
         }
 
         body, .site-shell {
@@ -193,16 +208,14 @@ export default function App() {
           color: var(--cream);
         }
 
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
+        a { color: inherit; text-decoration: none; }
 
         .site-shell {
           min-height: 100vh;
           position: relative;
         }
 
+        /* ── Background glow ───────────────────────────────────── */
         .background-glow {
           position: fixed;
           inset: 0;
@@ -214,23 +227,28 @@ export default function App() {
           z-index: 0;
         }
 
-        .container {
-          width: min(1320px, calc(100vw - var(--gutter) * 2));
-          margin: 0 auto;
+        /* ── THE ONE SHARED CONTENT WIDTH ──────────────────────── */
+        /*    Every .wrap inside the header AND every section       */
+        /*    uses this identical rule — guaranteed alignment.      */
+        .wrap {
+          width: min(var(--max-w), calc(100vw - var(--gutter) * 2));
+          margin-inline: auto;
         }
 
+        /* ── Fixed header ──────────────────────────────────────── */
         .topbar {
           position: fixed;
           inset: 0 0 auto 0;
           z-index: 1000;
-          min-height: var(--header-h);
+          height: var(--header-h);
           border-bottom: 1px solid var(--line);
-          background: rgba(8, 120, 121, 0.82);
+          background: rgba(8,120,121,0.84);
           backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
         }
 
         .topbar-inner {
-          min-height: var(--header-h);
+          height: var(--header-h);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -241,8 +259,7 @@ export default function App() {
           display: flex;
           align-items: center;
           gap: 12px;
-          min-width: 0;
-          flex: 0 1 auto;
+          flex-shrink: 0;
         }
 
         .brand-logo {
@@ -250,7 +267,7 @@ export default function App() {
           height: 40px;
           border-radius: 12px;
           object-fit: cover;
-          flex: 0 0 auto;
+          flex-shrink: 0;
         }
 
         .brand-title {
@@ -258,54 +275,67 @@ export default function App() {
           font-weight: 700;
           line-height: 1.05;
           letter-spacing: -0.02em;
+          white-space: nowrap;
         }
 
         .brand-subtitle {
-          margin-top: 4px;
+          margin-top: 3px;
           font-size: 0.72rem;
           text-transform: uppercase;
           letter-spacing: 0.18em;
           color: rgba(246,240,230,0.72);
+          white-space: nowrap;
         }
 
         .nav {
           display: flex;
           align-items: center;
-          gap: 18px;
+          gap: 20px;
+          font-size: 0.92rem;
+          color: rgba(246,240,230,0.88);
           flex-wrap: wrap;
           justify-content: flex-end;
-          font-size: 0.95rem;
-          color: rgba(246,240,230,0.9);
         }
 
-        .nav a:hover,
-        .footer-links a:hover,
-        .text-link:hover {
-          color: #fff;
-        }
+        .nav a:hover { color: #fff; }
 
+        /* ── Main — starts exactly below header ────────────────── */
         main {
           position: relative;
           z-index: 1;
           padding-top: var(--header-h);
         }
 
+        /* Every section id scrolls so its top lands below header */
         section[id] {
-          scroll-margin-top: calc(var(--header-h) + 10px);
+          scroll-margin-top: calc(var(--header-h) + 12px);
         }
 
-        .screen-section {
-          min-height: calc(100svh - var(--header-h));
-          display: flex;
-          align-items: center;
-          padding: 14px 0 18px;
+        /* ── Section wrapper ───────────────────────────────────── */
+        .section {
+          padding: var(--section-py) 0;
         }
 
         .stack {
-          width: 100%;
+          display: grid;
+          gap: 24px;
+        }
+
+        /* ── Hero section ──────────────────────────────────────── */
+        .hero-section {
+          padding: calc(var(--section-py) * 1.2) 0 var(--section-py);
+        }
+
+        .hero-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+          gap: 40px;
+          align-items: center;
+        }
+
+        .hero-copy {
           display: grid;
           gap: 18px;
-          align-content: center;
         }
 
         .pill {
@@ -313,118 +343,48 @@ export default function App() {
           align-items: center;
           gap: 8px;
           padding: 8px 14px;
-          border: 1px solid rgba(255,255,255,0.14);
+          border: 1px solid rgba(255,255,255,0.16);
           background: rgba(255,255,255,0.06);
           border-radius: 999px;
-          font-size: 0.92rem;
+          font-size: 0.9rem;
           color: rgba(246,240,230,0.92);
-        }
-
-        .hero-grid {
-          display: grid;
-          grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
-          gap: 26px;
-          align-items: center;
-        }
-
-        .hero-copy {
-          display: grid;
-          gap: 14px;
+          width: fit-content;
         }
 
         .hero-title {
-          margin: 0;
-          font-size: clamp(3.4rem, 6vw, 5.6rem);
-          line-height: 0.94;
+          font-size: clamp(3rem, 5.5vw, 5.2rem);
+          line-height: 0.95;
           letter-spacing: -0.055em;
-          max-width: 10.4ch;
           text-wrap: balance;
         }
 
-        .hero-title .line {
-          display: block;
-        }
+        .hero-title .line { display: block; }
 
         .lead {
-          max-width: 47rem;
-          font-size: 1.16rem;
-          line-height: 1.58;
+          font-size: 1.14rem;
+          line-height: 1.6;
           color: rgba(246,240,230,0.86);
-          margin: 0;
+          max-width: 48rem;
         }
 
         .sublead {
+          font-size: 1rem;
+          line-height: 1.65;
+          color: rgba(246,240,230,0.74);
           max-width: 50rem;
-          margin: 0;
-          color: rgba(246,240,230,0.76);
-          line-height: 1.64;
         }
 
         .hero-actions {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
-          margin-top: 6px;
+          padding-top: 4px;
         }
 
-        .button {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          min-height: 48px;
-          padding: 12px 18px;
-          border-radius: 16px;
-          font-weight: 600;
-          transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-        }
-
-        .button:hover,
-        .contact-panel:hover {
-          transform: translateY(-1px);
-        }
-
-        .button-primary {
-          background: var(--cream);
-          color: var(--text-dark);
-          box-shadow: var(--shadow);
-        }
-
-        .button-secondary {
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.28);
-        }
-
-        .card {
-          border: 1px solid var(--line-soft);
-          background: rgba(255,255,255,0.07);
-          border-radius: 28px;
-          box-shadow: var(--shadow);
-          backdrop-filter: blur(10px);
-        }
-
-        .card.cream {
-          background: var(--cream);
-          color: var(--text-dark);
-          border-color: rgba(11,143,144,0.14);
-        }
-
-        .eyebrow {
-          font-size: 0.8rem;
-          text-transform: uppercase;
-          letter-spacing: 0.22em;
-          color: rgba(246,240,230,0.68);
-        }
-
-        .cream .eyebrow,
-        .cream .section-title p,
-        .cream .muted,
-        .cream p,
-        .cream li,
-        .cream .legal-note,
-        .cream .legal-copy,
-        .cream .legal-list {
-          color: rgba(11,143,144,0.84);
+        /* ── Hero side card ────────────────────────────────────── */
+        .hero-side {
+          display: grid;
+          gap: var(--gap);
         }
 
         .hero-main-card {
@@ -433,207 +393,280 @@ export default function App() {
 
         .hero-main-card h3 {
           margin: 10px 0 16px;
-          font-size: 1.7rem;
-          line-height: 1.08;
+          font-size: 1.52rem;
+          line-height: 1.12;
           letter-spacing: -0.03em;
         }
 
         .hero-mini-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 12px;
+          gap: 10px;
         }
 
         .hero-mini-panel {
           display: flex;
           gap: 9px;
           align-items: flex-start;
-          padding: 14px 15px;
-          border-radius: 18px;
-          background: rgba(0,0,0,0.1);
-          line-height: 1.48;
-          font-size: 0.95rem;
+          padding: 13px 14px;
+          border-radius: 16px;
+          background: rgba(0,0,0,0.12);
+          line-height: 1.5;
+          font-size: 0.9rem;
         }
 
         .hero-stats {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 12px;
+          gap: 10px;
         }
 
         .stat-card {
           padding: 16px;
-          border-radius: 22px;
+          border-radius: 20px;
         }
 
         .stat-card strong {
           display: block;
-          font-size: 1.18rem;
+          font-size: 1.14rem;
+          font-weight: 700;
           margin-bottom: 6px;
         }
 
         .stat-card span {
           display: block;
+          font-size: 0.88rem;
           line-height: 1.5;
-          color: rgba(246,240,230,0.76);
+          color: rgba(246,240,230,0.74);
         }
 
-        .section-title {
-          max-width: 70rem;
+        /* ── Buttons ───────────────────────────────────────────── */
+        .button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 48px;
+          padding: 12px 20px;
+          border-radius: 14px;
+          font-weight: 600;
+          font-size: 0.97rem;
+          transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+          cursor: pointer;
+          white-space: nowrap;
         }
+
+        .button:hover { transform: translateY(-1px); }
+
+        .button-primary {
+          background: var(--cream);
+          color: var(--text-dark);
+          box-shadow: var(--shadow);
+        }
+
+        .button-primary:hover { box-shadow: 0 28px 64px rgba(0,0,0,0.18); }
+
+        .button-secondary {
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.28);
+        }
+
+        .button-secondary:hover { background: rgba(255,255,255,0.06); }
+
+        /* ── Cards ─────────────────────────────────────────────── */
+        .card {
+          border: 1px solid var(--line-soft);
+          background: rgba(255,255,255,0.07);
+          border-radius: 24px;
+          box-shadow: var(--shadow);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+        }
+
+        .card.cream {
+          background: var(--cream);
+          color: var(--text-dark);
+          border-color: rgba(11,143,144,0.14);
+        }
+
+        /* ── Eyebrow / section title ───────────────────────────── */
+        .eyebrow {
+          font-size: 0.78rem;
+          text-transform: uppercase;
+          letter-spacing: 0.22em;
+          color: rgba(246,240,230,0.62);
+        }
+
+        .cream .eyebrow { color: rgba(11,143,144,0.62); }
 
         .section-title h2 {
           margin: 8px 0 0;
-          font-size: clamp(2.4rem, 4.3vw, 4.2rem);
+          font-size: clamp(2.2rem, 4vw, 3.8rem);
           line-height: 1.02;
           letter-spacing: -0.045em;
           text-wrap: balance;
+          max-width: 22ch;
         }
 
         .section-title p {
-          max-width: 60rem;
+          max-width: 62ch;
           margin: 14px 0 0;
-          color: rgba(246,240,230,0.78);
-          line-height: 1.6;
+          color: rgba(246,240,230,0.76);
+          line-height: 1.62;
         }
 
-        .services-grid,
-        .packages-grid,
-        .faq-grid,
-        .readiness-grid,
-        .band-grid,
-        .proof-grid {
-          display: grid;
-          gap: 16px;
-        }
-
+        /* ── Services ──────────────────────────────────────────── */
         .services-grid {
+          display: grid;
           grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: var(--gap);
         }
 
-        .service-card,
-        .readiness-card,
-        .package-card,
-        .faq-card,
-        .about-card,
-        .contact-card,
-        .legal-card {
+        .service-card {
           padding: 22px;
-          height: 100%;
         }
 
-        .service-card h3,
-        .readiness-card h3,
-        .package-card h3,
-        .faq-card h3,
-        .about-card h3 {
+        .service-card h3 {
           margin: 14px 0 10px;
-          font-size: 1.32rem;
-          line-height: 1.18;
-          letter-spacing: -0.03em;
+          font-size: 1.18rem;
+          line-height: 1.22;
+          letter-spacing: -0.025em;
         }
 
-        .service-card p,
-        .readiness-card p,
-        .package-card p,
-        .faq-card p,
-        .about-card p,
-        .contact-card p,
-        .legal-copy p,
-        .legal-list,
-        .legal-note {
-          line-height: 1.58;
+        .service-card p {
+          line-height: 1.6;
+          color: rgba(246,240,230,0.78);
+          font-size: 0.96rem;
         }
 
+        /* ── Readiness ─────────────────────────────────────────── */
         .readiness-grid {
+          display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: var(--gap);
         }
 
         .readiness-card {
+          padding: 22px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 238px;
+          gap: 20px;
+        }
+
+        .readiness-card h3 {
+          margin: 14px 0 10px;
+          font-size: 1.18rem;
+          line-height: 1.22;
+          letter-spacing: -0.025em;
+        }
+
+        .readiness-card p {
+          line-height: 1.6;
+          color: rgba(246,240,230,0.78);
+          font-size: 0.96rem;
         }
 
         .band-grid {
+          display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: var(--gap);
         }
 
         .band-card {
-          padding: 18px;
-          border-radius: 22px;
+          padding: 18px 20px;
+          border-radius: 18px;
         }
 
         .band-card h3 {
-          margin: 0 0 8px;
-          font-size: 1.16rem;
-          line-height: 1.2;
+          margin-bottom: 8px;
+          font-size: 1.12rem;
+          letter-spacing: -0.02em;
         }
 
         .band-card p {
-          margin: 0;
-          color: rgba(246,240,230,0.78);
+          font-size: 0.94rem;
+          line-height: 1.58;
+          color: rgba(246,240,230,0.76);
         }
 
+        /* ── About ─────────────────────────────────────────────── */
         .about-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-          gap: 16px;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: var(--gap);
+          align-items: start;
         }
 
-        .about-copy h2,
-        .contact-card h2,
-        .legal-card h2 {
-          margin: 8px 0 12px;
-          font-size: clamp(2.2rem, 4vw, 3.8rem);
-          line-height: 1.04;
+        .about-card {
+          padding: 28px;
+          height: 100%;
+        }
+
+        .about-card h2 {
+          margin: 10px 0 16px;
+          font-size: clamp(1.8rem, 3vw, 2.8rem);
+          line-height: 1.06;
           letter-spacing: -0.04em;
           text-wrap: balance;
         }
 
-        .about-copy p {
-          margin: 0 0 12px;
-          color: rgba(246,240,230,0.8);
+        .about-card h3 {
+          margin: 10px 0 18px;
+          font-size: 1.28rem;
+          line-height: 1.2;
+          letter-spacing: -0.03em;
+        }
+
+        .about-card p {
+          line-height: 1.65;
+          color: rgba(246,240,230,0.78);
+          margin-bottom: 12px;
         }
 
         .about-targets {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
-          margin-top: 14px;
+          margin-top: 18px;
         }
 
         .about-target {
-          padding: 10px 14px;
+          padding: 8px 14px;
           border-radius: 999px;
           background: rgba(255,255,255,0.06);
           border: 1px solid var(--line-soft);
-          color: rgba(246,240,230,0.9);
           font-weight: 600;
+          font-size: 0.92rem;
         }
 
         .proof-grid {
+          display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
         }
 
-        .proof-item,
-        .package-item,
-        .legal-badge {
+        .proof-item {
           display: flex;
           align-items: flex-start;
           gap: 9px;
           padding: 12px 14px;
-          border-radius: 18px;
-        }
-
-        .proof-item {
+          border-radius: 14px;
           background: rgba(255,255,255,0.06);
           color: rgba(246,240,230,0.88);
+          font-size: 0.92rem;
+          line-height: 1.5;
         }
 
+        /* ── Packages ──────────────────────────────────────────── */
         .packages-grid {
+          display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: var(--gap);
+        }
+
+        .package-card {
+          padding: 24px;
         }
 
         .package-top {
@@ -641,27 +674,48 @@ export default function App() {
           align-items: flex-start;
           justify-content: space-between;
           gap: 12px;
-          margin-bottom: 14px;
+          margin-bottom: 6px;
+        }
+
+        .package-card h3 {
+          margin-bottom: 4px;
+          font-size: 1.28rem;
+          letter-spacing: -0.025em;
         }
 
         .package-subtitle {
-          color: rgba(11,143,144,0.68);
-          margin-top: 4px;
+          font-size: 0.86rem;
+          color: rgba(11,143,144,0.62);
+          margin-bottom: 4px;
         }
 
         .package-items {
           display: grid;
-          gap: 10px;
-          margin-top: 14px;
+          gap: 9px;
+          margin-top: 16px;
         }
 
         .package-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 9px;
+          padding: 11px 13px;
+          border-radius: 14px;
           background: rgba(11,143,144,0.08);
           color: rgba(11,143,144,0.86);
+          font-size: 0.93rem;
+          line-height: 1.5;
         }
 
+        /* ── FAQ ───────────────────────────────────────────────── */
         .faq-grid {
+          display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--gap);
+        }
+
+        .faq-card {
+          padding: 22px;
         }
 
         .faq-head {
@@ -671,43 +725,85 @@ export default function App() {
         }
 
         .faq-card h3 {
-          margin: 0;
+          font-size: 1.1rem;
+          line-height: 1.3;
+          letter-spacing: -0.02em;
         }
 
         .faq-card p {
-          margin: 12px 0 0;
-          color: rgba(246,240,230,0.78);
+          margin-top: 12px;
+          line-height: 1.62;
+          color: rgba(246,240,230,0.76);
+          font-size: 0.96rem;
         }
 
+        /* ── Contact ───────────────────────────────────────────── */
         .contact-wrap {
           display: grid;
-          grid-template-columns: minmax(0, 1.02fr) minmax(350px, 0.98fr);
-          gap: 16px;
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+          gap: var(--gap);
           align-items: stretch;
+        }
+
+        .contact-card {
+          padding: 28px;
+        }
+
+        .contact-card h2 {
+          margin: 10px 0 16px;
+          font-size: clamp(1.8rem, 3vw, 2.8rem);
+          line-height: 1.06;
+          letter-spacing: -0.04em;
+          text-wrap: balance;
+        }
+
+        .contact-card p {
+          line-height: 1.62;
+          color: rgba(11,143,144,0.78);
+          margin-bottom: 12px;
         }
 
         .info-box {
           margin-top: 16px;
           padding: 14px 16px;
-          border-radius: 18px;
+          border-radius: 16px;
           background: rgba(11,143,144,0.07);
           color: rgba(11,143,144,0.82);
           line-height: 1.58;
+          font-size: 0.95rem;
         }
+
+        .legal-links {
+          margin-top: 16px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+          color: rgba(11,143,144,0.76);
+          font-weight: 600;
+          font-size: 0.95rem;
+        }
+
+        .text-link:hover { color: var(--text-dark); }
 
         .contact-panels {
           display: grid;
-          gap: 14px;
+          gap: 12px;
+          align-content: start;
         }
 
         .contact-panel {
           display: block;
-          min-height: 112px;
           padding: 18px 20px;
-          border-radius: 20px;
+          border-radius: 18px;
           background: #fff;
           color: var(--text-dark);
           border: 1px solid rgba(11,143,144,0.14);
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .contact-panel:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.10);
         }
 
         .contact-title {
@@ -715,44 +811,53 @@ export default function App() {
           align-items: center;
           gap: 10px;
           font-weight: 700;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
+          font-size: 1rem;
         }
 
         .contact-text {
-          color: rgba(11,143,144,0.76);
-          line-height: 1.55;
+          color: rgba(11,143,144,0.72);
+          font-size: 0.93rem;
+          line-height: 1.5;
         }
 
-        .legal-links {
-          margin-top: 14px;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 14px;
-          color: rgba(11,143,144,0.78);
-          font-weight: 600;
-        }
-
-        .legal-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 16px;
+        /* ── Legal sections ────────────────────────────────────── */
+        .legal-card {
+          padding: 32px 36px;
         }
 
         .legal-copy {
           display: grid;
-          gap: 14px;
+          gap: 20px;
           color: rgba(11,143,144,0.84);
         }
 
-        .legal-copy h3 {
-          margin: 0 0 6px;
-          font-size: 1.12rem;
-          line-height: 1.25;
+        .legal-copy h2 {
+          margin: 8px 0 4px;
+          font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+          line-height: 1.08;
+          letter-spacing: -0.04em;
         }
+
+        .legal-copy h3 {
+          margin-bottom: 6px;
+          font-size: 1.06rem;
+          font-weight: 700;
+          line-height: 1.3;
+          color: var(--text-dark);
+        }
+
+        .legal-copy p {
+          line-height: 1.64;
+          margin-bottom: 8px;
+        }
+
+        .legal-copy p:last-child { margin-bottom: 0; }
 
         .legal-list {
           display: grid;
-          gap: 6px;
+          gap: 5px;
+          line-height: 1.58;
           color: rgba(11,143,144,0.84);
         }
 
@@ -760,25 +865,30 @@ export default function App() {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
+          margin-top: 4px;
         }
 
         .legal-badge {
-          background: rgba(11,143,144,0.08);
-          color: rgba(11,143,144,0.84);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 9px 14px;
+          border-radius: 14px;
+          background: rgba(11,143,144,0.07);
+          color: rgba(11,143,144,0.82);
+          font-size: 0.9rem;
         }
 
         .legal-note {
           padding: 14px 16px;
-          border-radius: 18px;
-          background: rgba(11,143,144,0.08);
-          color: rgba(11,143,144,0.84);
+          border-radius: 14px;
+          background: rgba(11,143,144,0.07);
+          color: rgba(11,143,144,0.80);
+          line-height: 1.58;
+          font-size: 0.94rem;
         }
 
-        .text-link {
-          color: rgba(11,143,144,0.86);
-          font-weight: 600;
-        }
-
+        /* ── Footer ────────────────────────────────────────────── */
         .footer {
           position: relative;
           z-index: 1;
@@ -786,160 +896,124 @@ export default function App() {
         }
 
         .footer-inner {
-          width: min(1320px, calc(100vw - var(--gutter) * 2));
-          margin: 0 auto;
-          padding: 18px 0 24px;
-          display: grid;
-          grid-template-columns: 1fr auto;
-          gap: 16px;
-          color: rgba(246,240,230,0.68);
-          font-size: 0.94rem;
+          padding: 20px 0 26px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 14px;
+          color: rgba(246,240,230,0.62);
+          font-size: 0.9rem;
         }
 
         .footer-links {
           display: flex;
           flex-wrap: wrap;
-          gap: 14px;
-          justify-content: flex-end;
+          gap: 16px;
         }
 
-        @media (max-width: 1380px) {
-          :root {
-            --gutter: 40px;
-          }
+        .footer-links a:hover { color: #fff; }
+
+        /* ── Responsive ────────────────────────────────────────── */
+        @media (max-width: 1280px) {
+          :root { --gutter: 32px; }
         }
 
-        @media (max-width: 1180px) {
-          .hero-grid,
-          .about-grid,
-          .contact-wrap,
-          .legal-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .services-grid,
-          .packages-grid,
-          .readiness-grid,
-          .band-grid,
-          .faq-grid {
+        @media (max-width: 1080px) {
+          .services-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
           }
-
+          .hero-grid {
+            grid-template-columns: 1fr;
+          }
           .hero-title {
-            max-width: 12ch;
+            font-size: clamp(2.8rem, 7vw, 4.4rem);
           }
         }
 
-        @media (max-width: 980px) {
+        @media (max-width: 900px) {
           :root {
-            --header-h: 112px;
-            --gutter: 24px;
+            --header-h: 108px;
+            --gutter: 20px;
+            --section-py: 52px;
           }
 
           .topbar-inner {
-            display: grid;
-            gap: 10px;
-            padding: 8px 0;
-            align-content: center;
+            height: auto;
+            padding: 10px 0;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 8px;
           }
 
           .nav {
             flex-wrap: nowrap;
             overflow-x: auto;
             scrollbar-width: none;
-            padding-bottom: 2px;
             justify-content: flex-start;
-          }
-
-          .nav::-webkit-scrollbar {
-            display: none;
-          }
-
-          .hero-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .hero-title {
-            font-size: clamp(3rem, 8vw, 4.8rem);
-            max-width: 11ch;
-          }
-
-          .hero-mini-grid,
-          .hero-stats,
-          .proof-grid,
-          .services-grid,
-          .packages-grid,
-          .readiness-grid,
-          .band-grid,
-          .faq-grid,
-          .legal-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .screen-section {
-            min-height: auto;
-            padding: 18px 0;
-          }
-        }
-
-        @media (max-width: 680px) {
-          :root {
-            --header-h: 120px;
-            --gutter: 14px;
-          }
-
-          .brand-logo {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-          }
-
-          .brand-title {
-            font-size: 0.98rem;
-          }
-
-          .brand-subtitle {
-            font-size: 0.64rem;
-            letter-spacing: 0.16em;
-          }
-
-          .hero-title {
-            font-size: clamp(2.25rem, 12vw, 3.6rem);
-            max-width: none;
-          }
-
-          .lead {
-            font-size: 1.02rem;
-          }
-
-          .button {
+            font-size: 0.88rem;
+            gap: 14px;
+            padding-bottom: 2px;
             width: 100%;
           }
 
-          .service-card,
-          .readiness-card,
-          .package-card,
-          .faq-card,
-          .about-card,
-          .contact-card,
-          .legal-card,
-          .hero-main-card {
-            padding: 18px;
-            border-radius: 22px;
-          }
+          .nav::-webkit-scrollbar { display: none; }
 
-          .footer-inner {
+          .about-grid,
+          .contact-wrap {
             grid-template-columns: 1fr;
           }
 
-          .footer-links {
-            justify-content: flex-start;
+          .readiness-grid,
+          .band-grid,
+          .packages-grid,
+          .faq-grid,
+          .hero-mini-grid,
+          .hero-stats,
+          .proof-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 620px) {
+          :root {
+            --header-h: 116px;
+            --gutter: 14px;
+            --section-py: 40px;
+          }
+
+          .hero-title {
+            font-size: clamp(2.2rem, 10vw, 3.2rem);
+          }
+
+          .lead { font-size: 1rem; }
+
+          .button { width: 100%; }
+
+          .services-grid,
+          .readiness-grid,
+          .band-grid,
+          .packages-grid,
+          .faq-grid,
+          .hero-mini-grid,
+          .hero-stats,
+          .proof-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .legal-card { padding: 22px 20px; }
+
+          .footer-inner {
+            flex-direction: column;
+            align-items: flex-start;
           }
         }
       `}</style>
 
+      {/* ── Header ──────────────────────────────────────────────────── */}
       <header className="topbar">
-        <div className="container topbar-inner">
+        <div className="wrap topbar-inner">
           <a href="#home" className="brand">
             <img src="/logo.png" alt="Bridge4Impact logo" className="brand-logo" />
             <div>
@@ -963,9 +1037,12 @@ export default function App() {
       </header>
 
       <main>
-        <section id="home" className="screen-section">
-          <div className="container stack">
+
+        {/* ── Hero ──────────────────────────────────────────────────── */}
+        <section id="home" className="hero-section">
+          <div className="wrap stack">
             <div className="hero-grid">
+
               <div className="hero-copy">
                 <div className="pill">
                   <Sparkles size={15} />
@@ -989,7 +1066,7 @@ export default function App() {
                   <a className="button button-primary" href="#readiness">
                     Start the pre-check <ArrowRight size={18} />
                   </a>
-                  <a className="button button-secondary" href="https://calendly.com/g-schmittberger">
+                  <a className="button button-secondary" href="https://calendly.com/g-schmittberger" target="_blank" rel="noopener noreferrer">
                     Book an intro call
                   </a>
                 </div>
@@ -1001,19 +1078,19 @@ export default function App() {
                   <h3>Fundraising with more focus and less wasted effort</h3>
                   <div className="hero-mini-grid">
                     <div className="hero-mini-panel">
-                      <Users size={16} />
+                      <Users size={16} style={{flexShrink:0, marginTop:2}} />
                       <span>Better investor fit instead of broad generic mass outreach.</span>
                     </div>
                     <div className="hero-mini-panel">
-                      <Search size={16} />
+                      <Search size={16} style={{flexShrink:0, marginTop:2}} />
                       <span>Early readiness checks before expensive fundraising mistakes.</span>
                     </div>
                     <div className="hero-mini-panel">
-                      <Globe size={16} />
+                      <Globe size={16} style={{flexShrink:0, marginTop:2}} />
                       <span>Cross-border perspective and partner access where useful.</span>
                     </div>
                     <div className="hero-mini-panel">
-                      <Handshake size={16} />
+                      <Handshake size={16} style={{flexShrink:0, marginTop:2}} />
                       <span>Selective, practical collaboration from preparation to active support.</span>
                     </div>
                   </div>
@@ -1034,18 +1111,19 @@ export default function App() {
                   </Card>
                 </div>
               </div>
+
             </div>
           </div>
         </section>
 
-        <section id="services" className="screen-section">
-          <div className="container stack">
+        {/* ── Services ──────────────────────────────────────────────── */}
+        <section id="services" className="section">
+          <div className="wrap stack">
             <SectionTitle
               eyebrow="Services"
               title="What Bridge4Impact can do for you"
               text="A practical mix of fundraising preparation, investor targeting, and hands-on support — adapted to what is actually needed at your stage."
             />
-
             <div className="services-grid">
               {services.map((service) => {
                 const Icon = service.icon
@@ -1061,14 +1139,14 @@ export default function App() {
           </div>
         </section>
 
-        <section id="readiness" className="screen-section">
-          <div className="container stack">
+        {/* ── Readiness Check ───────────────────────────────────────── */}
+        <section id="readiness" className="section">
+          <div className="wrap stack">
             <SectionTitle
               eyebrow="Investment Readiness Pre-Check"
-              title="Pre-check your investment readiness and receive your personalized reports"
-              text="Before I invest time in a first fundraising meeting with an interested entrepreneur, I usually ask for two readiness reports. This helps me understand your current preparation level and whether active fundraising already makes sense."
+              title="Pre-check your investment readiness before we talk"
+              text="Before I invest time in a first fundraising meeting, I ask for two readiness reports. This helps me understand your current preparation level and whether active fundraising already makes sense."
             />
-
             <div className="readiness-grid">
               {readinessSteps.map((step) => {
                 const Icon = step.icon
@@ -1080,7 +1158,7 @@ export default function App() {
                       <p>{step.text}</p>
                     </div>
                     <div>
-                      <a className="button button-secondary" href={step.href}>
+                      <a className="button button-secondary" href={step.href} target={step.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
                         {step.cta}
                       </a>
                     </div>
@@ -1088,7 +1166,6 @@ export default function App() {
                 )
               })}
             </div>
-
             <div className="band-grid">
               {readinessBands.map((band) => (
                 <Card key={band.title} className="band-card">
@@ -1100,27 +1177,26 @@ export default function App() {
           </div>
         </section>
 
-        <section id="about" className="screen-section">
-          <div className="container stack">
+        {/* ── About ─────────────────────────────────────────────────── */}
+        <section id="about" className="section">
+          <div className="wrap stack">
             <div className="about-grid">
               <Card className="about-card">
-                <div className="about-copy">
-                  <div className="eyebrow">About</div>
-                  <h2>Independent fundraising support with an ecosystem mindset</h2>
-                  <p>
-                    Bridge4Impact by Günter Schmittberger is built around a simple idea: better fundraising happens when preparation, investor fit, and execution work together.
-                  </p>
-                  <p>
-                    Instead of pushing every company into outreach too early, the goal is to strengthen quality first — then focus on the investors most likely to care.
-                  </p>
-                  <p>
-                    The advisory style is independent, practical, and collaborative, with a focus on impact-oriented startups, venture funds, and mission-driven capital.
-                  </p>
-                  <div className="about-targets">
-                    <div className="about-target">Impact startups</div>
-                    <div className="about-target">Venture funds</div>
-                    <div className="about-target">Ecosystem partners</div>
-                  </div>
+                <div className="eyebrow">About</div>
+                <h2>Independent fundraising support with an ecosystem mindset</h2>
+                <p>
+                  Bridge4Impact by Günter Schmittberger is built around a simple idea: better fundraising happens when preparation, investor fit, and execution work together.
+                </p>
+                <p>
+                  Instead of pushing every company into outreach too early, the goal is to strengthen quality first — then focus on the investors most likely to care.
+                </p>
+                <p>
+                  The advisory style is independent, practical, and collaborative, with a focus on impact-oriented startups, venture funds, and mission-driven capital.
+                </p>
+                <div className="about-targets">
+                  <div className="about-target">Impact startups</div>
+                  <div className="about-target">Venture funds</div>
+                  <div className="about-target">Ecosystem partners</div>
                 </div>
               </Card>
 
@@ -1130,7 +1206,7 @@ export default function App() {
                 <div className="proof-grid">
                   {proofPoints.map((point) => (
                     <div key={point} className="proof-item">
-                      <CheckCircle2 size={16} />
+                      <CheckCircle2 size={16} style={{flexShrink:0, marginTop:2}} />
                       <span>{point}</span>
                     </div>
                   ))}
@@ -1140,14 +1216,14 @@ export default function App() {
           </div>
         </section>
 
-        <section id="packages" className="screen-section">
-          <div className="container stack">
+        {/* ── Packages ──────────────────────────────────────────────── */}
+        <section id="packages" className="section">
+          <div className="wrap stack">
             <SectionTitle
               eyebrow="Packages"
-              title="A clear structure for how people can work with you"
-              text="This section is designed to make your offer easier to understand and easier to buy."
+              title="How we can work together"
+              text="Three clear starting points — each adapted to where you actually are in your fundraising journey."
             />
-
             <div className="packages-grid">
               {packages.map((pkg) => {
                 const Icon = pkg.icon
@@ -1160,11 +1236,10 @@ export default function App() {
                       </div>
                       <Icon size={22} />
                     </div>
-
                     <div className="package-items">
                       {pkg.items.map((item) => (
                         <div key={item} className="package-item">
-                          <CheckCircle2 size={16} />
+                          <CheckCircle2 size={15} style={{flexShrink:0, marginTop:1}} />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -1176,18 +1251,18 @@ export default function App() {
           </div>
         </section>
 
-        <section id="faq" className="screen-section">
-          <div className="container stack">
+        {/* ── FAQ ───────────────────────────────────────────────────── */}
+        <section id="faq" className="section">
+          <div className="wrap stack">
             <SectionTitle
               eyebrow="FAQ"
               title="Questions a serious client may ask before reaching out"
             />
-
             <div className="faq-grid">
               {faqs.map((faq) => (
                 <Card key={faq.q} className="faq-card">
                   <div className="faq-head">
-                    <MessageSquare size={18} />
+                    <MessageSquare size={18} style={{flexShrink:0, marginTop:2}} />
                     <h3>{faq.q}</h3>
                   </div>
                   <p>{faq.a}</p>
@@ -1197,26 +1272,27 @@ export default function App() {
           </div>
         </section>
 
-        <section id="contact" className="screen-section">
-          <div className="container stack">
+        {/* ── Contact ───────────────────────────────────────────────── */}
+        <section id="contact" className="section">
+          <div className="wrap stack">
             <div className="contact-wrap">
               <Card className="contact-card cream">
                 <div className="eyebrow">Next step</div>
                 <h2>Ready to explore whether we are a fit?</h2>
                 <p>
-                  Please complete the two readiness checks first and then send both reports by email to guenter@bridge4impact.com.
+                  Complete the two readiness checks first and send both reports to guenter@bridge4impact.com. After that, we can discuss your current fundraising status, your materials, and the type of investors you actually want to reach.
                 </p>
                 <div className="info-box">
-                  After that, we can discuss your current fundraising status, your materials, and the type of investors you actually want to reach.
+                  Early conversations are usually the most valuable ones — before time, effort, and reputation have been spent on the wrong approach.
                 </div>
                 <div className="legal-links">
-                  <a className="text-link" href="#impressum">Go to Impressum</a>
-                  <a className="text-link" href="#datenschutz">Go to Datenschutz</a>
+                  <a className="text-link" href="#impressum">Impressum</a>
+                  <a className="text-link" href="#datenschutz">Datenschutz</a>
                 </div>
               </Card>
 
               <div className="contact-panels">
-                <a className="contact-panel" href="https://calendly.com/g-schmittberger">
+                <a className="contact-panel" href="https://calendly.com/g-schmittberger" target="_blank" rel="noopener noreferrer">
                   <div className="contact-title">
                     <CalendarDays size={20} />
                     <span>Book an intro call</span>
@@ -1244,12 +1320,15 @@ export default function App() {
           </div>
         </section>
 
-        <section id="impressum" className="screen-section">
-          <div className="container stack">
+        {/* ── Impressum ─────────────────────────────────────────────── */}
+        <section id="impressum" className="section">
+          <div className="wrap">
             <Card className="legal-card cream">
               <div className="legal-copy">
-                <div className="eyebrow">Impressum</div>
-                <h2>Angaben gemäß § 5 DDG</h2>
+                <div>
+                  <div className="eyebrow">Impressum</div>
+                  <h2>Angaben gemäß § 5 DDG</h2>
+                </div>
 
                 <div>
                   <h3>Diensteanbieter</h3>
@@ -1264,13 +1343,13 @@ export default function App() {
                 <div>
                   <h3>Kontakt</h3>
                   <div className="legal-list">
-                    <div>E-Mail: guenter@bridge4impact.com</div>
-                    <div>Telefon / WhatsApp: +49 175 298 5215</div>
+                    <div>E-Mail: <a href="mailto:guenter@bridge4impact.com">guenter@bridge4impact.com</a></div>
+                    <div>Telefon / WhatsApp: <a href="tel:+491752985215">+49 175 298 5215</a></div>
                   </div>
                 </div>
 
                 <div>
-                  <h3>Umsatzsteuer-Identifikationsnummer gemäß § 27 a UStG</h3>
+                  <h3>Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG</h3>
                   <div className="legal-list">
                     <div>DE167964328</div>
                   </div>
@@ -1279,10 +1358,7 @@ export default function App() {
                 <div>
                   <h3>Verantwortlich für journalistisch-redaktionelle Inhalte gemäß § 18 Abs. 2 MStV</h3>
                   <div className="legal-list">
-                    <div>Günter Schmittberger</div>
-                    <div>Gonsbachblick 33</div>
-                    <div>55122 Mainz</div>
-                    <div>Deutschland</div>
+                    <div>Günter Schmittberger, Gonsbachblick 33, 55122 Mainz, Deutschland</div>
                   </div>
                 </div>
 
@@ -1300,24 +1376,27 @@ export default function App() {
                   </div>
                   <div className="legal-badge">
                     <ShieldCheck size={16} />
-                    <span>Geschäftswebsite / Dienstleistungsangebot</span>
+                    <span>Geschäftswebsite — Fundraising Advisory</span>
                   </div>
                 </div>
 
                 <div className="legal-note">
-                  Diese Website dient der Darstellung von Dienstleistungen im Bereich Fundraising Advisory für Startups, Venture Funds und ausgewählte Ökosystempartner.
+                  Diese Website dient der Darstellung von Beratungsdienstleistungen im Bereich Fundraising Advisory für impact-orientierte Startups, Venture Funds und ausgewählte Ökosystempartner.
                 </div>
               </div>
             </Card>
           </div>
         </section>
 
-        <section id="datenschutz" className="screen-section">
-          <div className="container stack">
+        {/* ── Datenschutz ───────────────────────────────────────────── */}
+        <section id="datenschutz" className="section">
+          <div className="wrap">
             <Card className="legal-card cream">
               <div className="legal-copy">
-                <div className="eyebrow">Datenschutz</div>
-                <h2>Datenschutzhinweise</h2>
+                <div>
+                  <div className="eyebrow">Datenschutz</div>
+                  <h2>Datenschutzhinweise</h2>
+                </div>
 
                 <div>
                   <h3>1. Verantwortlicher</h3>
@@ -1332,68 +1411,68 @@ export default function App() {
                 <div>
                   <h3>2. Allgemeine Hinweise zur Datenverarbeitung</h3>
                   <p>
-                    Beim Aufruf dieser Website werden technisch erforderliche Informationen verarbeitet, insbesondere IP-Adresse, Datum und Uhrzeit des Zugriffs, angeforderte Inhalte, Browser-Informationen, Referrer sowie technische Protokolldaten. Diese Verarbeitung ist erforderlich, um die Website sicher und stabil bereitzustellen.
+                    Beim Aufruf dieser Website werden technisch notwendige Daten verarbeitet, darunter IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Inhalte, Browser- und Geräteinformationen sowie ggf. die verweisende Website (Referrer). Diese Verarbeitung ist für den sicheren und stabilen Betrieb der Website erforderlich.
                   </p>
                   <p>
-                    Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt in der sicheren, stabilen und wirtschaftlichen Bereitstellung dieses Online-Angebots.
+                    Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Das berechtigte Interesse liegt in der technisch einwandfreien, sicheren und wirtschaftlichen Bereitstellung dieses Online-Angebots.
                   </p>
                 </div>
 
                 <div>
-                  <h3>3. Hosting und Auslieferung über Cloudflare Pages / Cloudflare</h3>
+                  <h3>3. Hosting über Cloudflare Pages</h3>
                   <p>
-                    Diese Website wird über Cloudflare Pages und Dienste der Cloudflare-Gruppe ausgeliefert. Dabei können personenbezogene Daten, insbesondere technische Verbindungsdaten und IP-Adressen, verarbeitet werden, um Inhalte auszuliefern, Angriffe abzuwehren und die Verfügbarkeit der Website sicherzustellen.
+                    Diese Website wird über Cloudflare Pages gehostet und über das globale Netzwerk von Cloudflare, Inc. (101 Townsend St., San Francisco, CA 94107, USA) ausgeliefert. Dabei können Verbindungsdaten einschließlich IP-Adressen auf Servern außerhalb der EU verarbeitet werden. Die Übermittlung erfolgt auf Basis der Standardvertragsklauseln der EU-Kommission sowie der ergänzenden Schutzmaßnahmen von Cloudflare.
                   </p>
                   <p>
-                    Weitere Informationen zur Verarbeitung personenbezogener Daten durch Cloudflare finden Sie in den Datenschutzinformationen von Cloudflare.
+                    Cloudflare setzt außerdem Sicherheitsmechanismen ein (u. a. DDoS-Schutz, SSL/TLS-Verschlüsselung), die eine Verarbeitung technischer Verbindungsdaten erfordern. Weitere Informationen finden Sie in der Datenschutzerklärung von Cloudflare unter cloudflare.com/privacypolicy.
                   </p>
                 </div>
 
                 <div>
                   <h3>4. Kontaktaufnahme per E-Mail, Telefon oder WhatsApp</h3>
                   <p>
-                    Wenn Sie mich per E-Mail, Telefon oder WhatsApp kontaktieren, verarbeite ich die von Ihnen übermittelten Daten ausschließlich zur Bearbeitung Ihrer Anfrage und für eine gegebenenfalls anschließende geschäftliche Kommunikation.
+                    Wenn Sie mich per E-Mail, Telefon oder WhatsApp kontaktieren, verarbeite ich die von Ihnen übermittelten personenbezogenen Daten ausschließlich zur Bearbeitung Ihrer Anfrage und für eine etwaige anschließende Geschäftskommunikation.
                   </p>
                   <p>
-                    Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit es um die Anbahnung oder Durchführung eines Vertrags geht, sowie ergänzend Art. 6 Abs. 1 lit. f DSGVO für allgemeine Anfragen und Kommunikation.
+                    Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit die Kontaktaufnahme der Anbahnung oder Durchführung eines Vertragsverhältnisses dient, sowie ergänzend Art. 6 Abs. 1 lit. f DSGVO für allgemeine Anfragen. Bei Nutzung von WhatsApp gelten zusätzlich die Datenschutzbedingungen von Meta Platforms Ireland Ltd.
                   </p>
                 </div>
 
                 <div>
                   <h3>5. Terminbuchung über Calendly</h3>
                   <p>
-                    Für die Terminvereinbarung wird auf einen externen Buchungsdienst weitergeleitet. Beim Aufruf dieses Dienstes werden personenbezogene Daten direkt durch den jeweiligen Anbieter verarbeitet. Bitte beachten Sie daher zusätzlich die Datenschutzinformationen des externen Buchungsdienstes.
+                    Für die Terminbuchung wird auf den externen Dienst Calendly (Calendly LLC, 271 17th St NW, Atlanta, GA 30363, USA) weitergeleitet. Die Datenverarbeitung im Rahmen der Terminbuchung — insbesondere Name, E-Mail-Adresse und ggf. weitere Angaben — erfolgt direkt durch Calendly. Es gelten die Datenschutzbestimmungen von Calendly (calendly.com/privacy). Eine Datenübermittlung in die USA erfolgt auf Basis der Standardvertragsklauseln der EU-Kommission.
                   </p>
                 </div>
 
                 <div>
                   <h3>6. Externe Links</h3>
                   <p>
-                    Diese Website enthält Links zu externen Websites, insbesondere zu Unbiased Ventures und D-Risk.IT. Für die Datenverarbeitung auf den verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.
+                    Diese Website enthält Links zu externen Anbietern, insbesondere zu Unbiased Ventures (unbiasedventures.ch) und D-Risk.IT (dri.ai). Für die Datenverarbeitung auf den verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich. Beim Aufruf externer Links gelten die jeweiligen Datenschutzhinweise der verlinkten Anbieter.
                   </p>
                 </div>
 
                 <div>
                   <h3>7. Cookies und Tracking</h3>
                   <p>
-                    Auf dieser Website werden nach aktuellem Stand keine eigenen Analyse- oder Marketing-Tools eingesetzt. Sollten künftig zusätzliche Tools, Einbettungen oder Tracking-Dienste eingesetzt werden, werden diese Datenschutzhinweise entsprechend angepasst.
+                    Auf dieser Website werden nach aktuellem Stand keine eigenen Analyse-, Marketing- oder Tracking-Tools eingesetzt. Es werden keine Cookies zu Werbe- oder Analysezwecken gesetzt. Cloudflare kann im Rahmen des Sicherheits- und Lastmanagements technisch notwendige Cookies verwenden. Sobald künftig weitere Dienste mit Tracking-Funktion eingesetzt werden, werden diese Datenschutzhinweise entsprechend angepasst.
                   </p>
                 </div>
 
                 <div>
                   <h3>8. Speicherdauer</h3>
                   <p>
-                    Personenbezogene Daten werden nur so lange gespeichert, wie dies für die jeweiligen Zwecke erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen.
+                    Personenbezogene Daten werden nur so lange gespeichert, wie dies für die jeweiligen Verarbeitungszwecke erforderlich ist oder gesetzliche Aufbewahrungspflichten bestehen. Kontaktanfragen werden nach abgeschlossener Bearbeitung gelöscht, sofern keine weitergehende Geschäftsbeziehung besteht.
                   </p>
                 </div>
 
                 <div>
                   <h3>9. Ihre Rechte</h3>
                   <p>
-                    Ihnen stehen nach der DSGVO insbesondere folgende Rechte zu: Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit, Widerspruch gegen bestimmte Verarbeitungen sowie das Recht, eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft zu widerrufen.
+                    Ihnen stehen nach der DSGVO folgende Rechte zu: Auskunft über gespeicherte Daten (Art. 15), Berichtigung unrichtiger Daten (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) sowie Widerspruch gegen bestimmte Verarbeitungen (Art. 21). Sofern die Verarbeitung auf einer Einwilligung beruht, können Sie diese jederzeit mit Wirkung für die Zukunft widerrufen.
                   </p>
                   <p>
-                    Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
+                    Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständig ist der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Rheinland-Pfalz.
                   </p>
                 </div>
 
@@ -1405,10 +1484,12 @@ export default function App() {
             </Card>
           </div>
         </section>
+
       </main>
 
+      {/* ── Footer ──────────────────────────────────────────────────── */}
       <footer className="footer">
-        <div className="footer-inner">
+        <div className="wrap footer-inner">
           <div>© Bridge4Impact by Günter Schmittberger — Fundraising Advisory for impact startups and venture funds</div>
           <div className="footer-links">
             <a href="#home">Home</a>
@@ -1417,6 +1498,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+
     </div>
   )
 }
