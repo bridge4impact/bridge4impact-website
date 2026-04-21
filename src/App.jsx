@@ -21,6 +21,7 @@ import {
 const CALENDLY_LINK = 'https://calendly.com/g-schmittberger'
 const UNBIASED_LINK = 'https://www.unbiasedventures.ch/'
 const DRISK_LINK = 'https://dri.ai/drisk-it'
+const EQUISY_LINK = 'https://equisy.io/'
 
 // Replace these after you create the Stripe payment links.
 const STRIPE_LINKS = {
@@ -262,7 +263,7 @@ export default function App() {
           --max-w: 1440px;
           --gutter: 28px;
           --section-bottom: 36px;
-          --section-top: 10px;
+          --section-top: 8px;
           --gap: 18px;
         }
 
@@ -271,7 +272,7 @@ export default function App() {
           margin: 0;
           padding: 0;
           scroll-behavior: smooth;
-          scroll-padding-top: calc(var(--header-h) + 8px);
+          scroll-padding-top: var(--header-h);
         }
         body {
           margin: 0;
@@ -361,7 +362,7 @@ export default function App() {
           z-index: 1;
           padding-top: var(--header-h);
         }
-        section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
+        section[id] { scroll-margin-top: var(--header-h); }
         .page-section {
           min-height: calc(100svh - var(--header-h));
           padding: var(--section-top) 0 var(--section-bottom);
@@ -449,7 +450,7 @@ export default function App() {
         }
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+          grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
           gap: 28px;
           align-items: start;
         }
@@ -459,16 +460,17 @@ export default function App() {
         }
         .hero-title {
           font-size: clamp(3.2rem, 5.6vw, 6rem);
-          line-height: 0.93;
+          line-height: 0.92;
           letter-spacing: -0.06em;
-          max-width: 12ch;
+          max-width: none;
         }
         .hero-title .line { display: block; }
+        .hero-title .line.small { font-size: 0.76em; line-height: 0.94; }
         .lead {
-          font-size: 1.14rem;
-          line-height: 1.6;
+          font-size: 1rem;
+          line-height: 1.55;
           color: rgba(246,240,230,0.86);
-          max-width: 48rem;
+          max-width: none;
         }
         .sublead {
           font-size: 1rem;
@@ -672,8 +674,9 @@ export default function App() {
           font-size: clamp(1.8rem, 3vw, 2.8rem);
           line-height: 1.06;
           letter-spacing: -0.04em;
-          max-width: 16ch;
+          max-width: none;
         }
+        .about-card h2 .line { display: block; }
         .about-card h3 {
           margin: 10px 0 18px;
           font-size: 1.28rem;
@@ -803,10 +806,11 @@ export default function App() {
           :root {
             --header-h: 116px;
             --gutter: 14px;
-            --section-top: 10px;
+            --section-top: 8px;
             --section-bottom: 34px;
           }
-          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: 11ch; }
+          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: none; }
+          .hero-title .line.small { font-size: 0.84em; }
           .lead { font-size: 1rem; }
           .button { width: 100%; }
           .services-grid,
@@ -931,8 +935,9 @@ export default function App() {
                   <div className="hero-copy">
                     <div className="pill"><Sparkles size={15} />Investment readiness first. Outreach second.</div>
                     <h1 className="hero-title">
-                      <span className="line">Bridging strong impact</span>
-                      <span className="line">ventures with the</span>
+                      <span className="line">Bridging strong</span>
+                      <span className="line">impact ventures</span>
+                      <span className="line small">with the</span>
                       <span className="line">right capital.</span>
                     </h1>
                     <p className="lead">
@@ -1006,6 +1011,16 @@ export default function App() {
                     )
                   })}
                 </div>
+                <Card className="readiness-card">
+                  <div>
+                    <BriefcaseBusiness size={24} />
+                    <h3>No data room yet?</h3>
+                    <p>If you do not yet have a structured data room, I recommend creating a paid account on Equisy before serious investor outreach.</p>
+                  </div>
+                  <div>
+                    <a className="button button-secondary" href={EQUISY_LINK} target="_blank" rel="noopener noreferrer">Open Equisy</a>
+                  </div>
+                </Card>
               </div>
             </section>
 
@@ -1014,7 +1029,10 @@ export default function App() {
                 <div className="about-grid">
                   <Card className="about-card">
                     <div className="eyebrow">About</div>
-                    <h2>Independent fundraising support with an ecosystem mindset</h2>
+                    <h2>
+                      <span className="line">Independent fundraising support</span>
+                      <span className="line">with an ecosystem mindset</span>
+                    </h2>
                     <p>
                       Bridge4Impact by Günter Schmittberger is built around a simple idea: better fundraising happens when preparation, investor fit, and execution work together.
                     </p>
