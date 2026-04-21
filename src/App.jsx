@@ -182,11 +182,11 @@ export default function App() {
           --shadow:      0 24px 60px rgba(0,0,0,0.14);
 
           /* ── Single layout constants ─────────────────────────── */
-          --header-h:    82px;
-          --max-w:       1280px;
-          --gutter:      48px;          /* side space each side   */
-          --section-py:  72px;          /* vertical section pad   */
-          --gap:         16px;          /* standard grid gap      */
+          --header-h:    78px;
+          --max-w:       1440px;
+          --gutter:      28px;
+          --section-py:  48px;
+          --gap:         16px;
         }
 
         /* ── Reset / base ──────────────────────────────────────── */
@@ -194,8 +194,7 @@ export default function App() {
 
         html {
           scroll-behavior: smooth;
-          /* sections land exactly below the fixed header */
-          scroll-padding-top: calc(var(--header-h) + 12px);
+          scroll-padding-top: calc(var(--header-h) + 4px);
         }
 
         body {
@@ -308,12 +307,12 @@ export default function App() {
 
         /* Every section id scrolls so its top lands below header */
         section[id] {
-          scroll-margin-top: calc(var(--header-h) + 12px);
+          scroll-margin-top: calc(var(--header-h) + 4px);
         }
 
         /* ── Section wrapper ───────────────────────────────────── */
         .section {
-          padding: var(--section-py) 0;
+          padding: 40px 0 48px;
         }
 
         .stack {
@@ -323,14 +322,14 @@ export default function App() {
 
         /* ── Hero section ──────────────────────────────────────── */
         .hero-section {
-          padding: calc(var(--section-py) * 1.2) 0 var(--section-py);
+          padding: 28px 0 40px;
         }
 
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-          gap: 40px;
-          align-items: center;
+          grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+          gap: 28px;
+          align-items: start;
         }
 
         .hero-copy {
@@ -352,10 +351,10 @@ export default function App() {
         }
 
         .hero-title {
-          font-size: clamp(3rem, 5.5vw, 5.2rem);
-          line-height: 0.95;
-          letter-spacing: -0.055em;
-          text-wrap: balance;
+          font-size: clamp(3.2rem, 5.8vw, 5.8rem);
+          line-height: 0.92;
+          letter-spacing: -0.06em;
+          max-width: 8.5ch;
         }
 
         .hero-title .line { display: block; }
@@ -593,13 +592,13 @@ export default function App() {
         /* ── About ─────────────────────────────────────────────── */
         .about-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-          gap: var(--gap);
-          align-items: start;
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+          gap: 20px;
+          align-items: stretch;
         }
 
         .about-card {
-          padding: 28px;
+          padding: 32px;
           height: 100%;
         }
 
@@ -1050,9 +1049,9 @@ export default function App() {
                 </div>
 
                 <h1 className="hero-title">
-                  <span className="line">Bridging strong</span>
-                  <span className="line">impact ventures</span>
-                  <span className="line">with the right capital.</span>
+                  <span className="line">Bridging strong impact</span>
+                  <span className="line">ventures with</span>
+                  <span className="line">the right capital.</span>
                 </h1>
 
                 <p className="lead">
