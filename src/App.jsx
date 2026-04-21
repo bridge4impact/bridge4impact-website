@@ -95,38 +95,66 @@ const proofPoints = [
 const packages = [
   {
     icon: FileText,
-    title: 'Readiness Sprint',
-    subtitle: 'Best for early preparation',
+    title: 'Investor Readiness Audit',
+    subtitle: 'Best for startups before active outreach',
+    price: '€350 net',
+    body: 'Know whether you are ready to raise, what is missing, and what to fix first.',
     items: [
-      'Deck and narrative review',
-      'Investment readiness feedback',
-      'Key weaknesses and priorities',
-      'Clear next-step recommendations',
+      'Review of pitch deck or fundraising materials',
+      'Readiness assessment',
+      'Identification of the biggest gaps',
+      'Recommendations on positioning, materials, and process',
+      '45-minute review call',
     ],
+    ctaLabel: 'Buy Investor Readiness Audit',
+    ctaHref: 'https://buy.stripe.com/REPLACE_READINESS_AUDIT',
+    secondaryLabel: 'Ask a question first',
+    secondaryHref: 'mailto:guenter@bridge4impact.com?subject=Question%20about%20Investor%20Readiness%20Audit',
+    note: 'Fixed entry offer. All prices are net of VAT; VAT is added where legally required.',
   },
   {
     icon: Users,
-    title: 'Investor Fit Package',
-    subtitle: 'Best for focused outreach preparation',
+    title: 'Fundraising Workflow Sprint',
+    subtitle: 'Best for teams that need structure fast',
+    price: '€1,200 net',
+    body: 'Turn fundraising chaos into a repeatable system in a short, focused sprint.',
     items: [
-      'Investor profile definition',
-      'Research-backed shortlist support',
-      'Outreach messaging guidance',
-      'Smarter targeting before launch',
+      'folk CRM structure and pipeline design',
+      'Key custom fields and segmentation logic',
+      'Investor shortlist framework',
+      'Outreach templates',
+      'Follow-up workflow',
+      'Practical next-step roadmap',
     ],
+    ctaLabel: 'Buy Workflow Sprint',
+    ctaHref: 'https://buy.stripe.com/REPLACE_WORKFLOW_SPRINT',
+    secondaryLabel: 'Discuss fit by email',
+    secondaryHref: 'mailto:guenter@bridge4impact.com?subject=Question%20about%20Fundraising%20Workflow%20Sprint',
+    note: 'Fixed entry offer. All prices are net of VAT; VAT is added where legally required.',
   },
   {
     icon: LineChart,
-    title: 'Fundraising Advisory',
-    subtitle: 'Best for active mandates',
+    title: 'Fractional Fundraising Ops Support',
+    subtitle: 'Best for startups and fund managers in live fundraising mode',
+    price: '€1,500+ net / month',
+    body: 'Ongoing remote support without hiring a full-time fundraising operations manager.',
     items: [
-      'Ongoing fundraising support',
-      'Tracking and follow-up',
-      'Investor communication support',
-      'Flexible fee structures depending on case quality',
+      'Weekly strategy and execution support',
+      'Workflow management in folk',
+      'Investor targeting refinement',
+      'Outreach and follow-up improvements',
+      'Pipeline review and founder guidance',
     ],
+    ctaLabel: 'Book free intro call',
+    ctaHref: 'https://calendly.com/g-schmittberger',
+    secondaryLabel: 'Pay €350 onboarding deposit',
+    secondaryHref: 'https://buy.stripe.com/REPLACE_ADVISORY_DEPOSIT',
+    note: 'The intro call is free. The €350 net deposit is not for the intro meeting; it is credited against the first month if we start working together and otherwise covers reserved onboarding/scoping time.',
   },
 ]
+
+const packagePricingNote =
+  'All package prices are shown net of VAT. German VAT and other VAT treatment apply where legally required. For business clients outside Germany, reverse-charge treatment may apply where the legal requirements are met.'
 
 const faqs = [
   {
@@ -182,11 +210,11 @@ export default function App() {
           --shadow:      0 24px 60px rgba(0,0,0,0.14);
 
           /* ── Single layout constants ─────────────────────────── */
-          --header-h:    78px;
-          --max-w:       1440px;
-          --gutter:      28px;
-          --section-py:  48px;
-          --gap:         16px;
+          --header-h:    82px;
+          --max-w:       1280px;
+          --gutter:      48px;          /* side space each side   */
+          --section-py:  72px;          /* vertical section pad   */
+          --gap:         16px;          /* standard grid gap      */
         }
 
         /* ── Reset / base ──────────────────────────────────────── */
@@ -194,7 +222,8 @@ export default function App() {
 
         html {
           scroll-behavior: smooth;
-          scroll-padding-top: calc(var(--header-h) + 4px);
+          /* sections land exactly below the fixed header */
+          scroll-padding-top: calc(var(--header-h) + 12px);
         }
 
         body {
@@ -307,12 +336,12 @@ export default function App() {
 
         /* Every section id scrolls so its top lands below header */
         section[id] {
-          scroll-margin-top: calc(var(--header-h) + 4px);
+          scroll-margin-top: calc(var(--header-h) + 12px);
         }
 
         /* ── Section wrapper ───────────────────────────────────── */
         .section {
-          padding: 40px 0 48px;
+          padding: var(--section-py) 0;
         }
 
         .stack {
@@ -322,14 +351,14 @@ export default function App() {
 
         /* ── Hero section ──────────────────────────────────────── */
         .hero-section {
-          padding: 28px 0 40px;
+          padding: calc(var(--section-py) * 1.2) 0 var(--section-py);
         }
 
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
-          gap: 28px;
-          align-items: start;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+          gap: 40px;
+          align-items: center;
         }
 
         .hero-copy {
@@ -351,10 +380,10 @@ export default function App() {
         }
 
         .hero-title {
-          font-size: clamp(3.2rem, 5.8vw, 5.8rem);
-          line-height: 0.92;
-          letter-spacing: -0.06em;
-          max-width: 8.5ch;
+          font-size: clamp(3rem, 5.5vw, 5.2rem);
+          line-height: 0.95;
+          letter-spacing: -0.055em;
+          text-wrap: balance;
         }
 
         .hero-title .line { display: block; }
@@ -471,6 +500,26 @@ export default function App() {
         }
 
         .button-secondary:hover { background: rgba(255,255,255,0.06); }
+
+        .button-cream-primary {
+          background: var(--text-dark);
+          color: var(--cream);
+          box-shadow: 0 16px 36px rgba(11,143,144,0.18);
+        }
+
+        .button-cream-primary:hover {
+          box-shadow: 0 22px 46px rgba(11,143,144,0.24);
+        }
+
+        .button-cream-secondary {
+          background: transparent;
+          color: var(--text-dark);
+          border: 1px solid rgba(11,143,144,0.22);
+        }
+
+        .button-cream-secondary:hover {
+          background: rgba(11,143,144,0.06);
+        }
 
         /* ── Cards ─────────────────────────────────────────────── */
         .card {
@@ -592,13 +641,13 @@ export default function App() {
         /* ── About ─────────────────────────────────────────────── */
         .about-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-          gap: 20px;
-          align-items: stretch;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: var(--gap);
+          align-items: start;
         }
 
         .about-card {
-          padding: 32px;
+          padding: 28px;
           height: 100%;
         }
 
@@ -666,6 +715,9 @@ export default function App() {
 
         .package-card {
           padding: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
         }
 
         .package-top {
@@ -673,25 +725,41 @@ export default function App() {
           align-items: flex-start;
           justify-content: space-between;
           gap: 12px;
-          margin-bottom: 6px;
         }
 
         .package-card h3 {
           margin-bottom: 4px;
-          font-size: 1.28rem;
+          font-size: 1.3rem;
+          line-height: 1.15;
           letter-spacing: -0.025em;
         }
 
         .package-subtitle {
           font-size: 0.86rem;
           color: rgba(11,143,144,0.62);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
+        }
+
+        .package-price {
+          display: inline-flex;
+          align-items: center;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(11,143,144,0.08);
+          color: rgba(11,143,144,0.88);
+          font-size: 0.92rem;
+          font-weight: 700;
+        }
+
+        .package-body {
+          color: rgba(11,143,144,0.78);
+          line-height: 1.62;
+          font-size: 0.98rem;
         }
 
         .package-items {
           display: grid;
           gap: 9px;
-          margin-top: 16px;
         }
 
         .package-item {
@@ -704,6 +772,28 @@ export default function App() {
           color: rgba(11,143,144,0.86);
           font-size: 0.93rem;
           line-height: 1.5;
+        }
+
+        .package-actions {
+          display: grid;
+          gap: 10px;
+          margin-top: auto;
+        }
+
+        .package-note {
+          padding: 12px 14px;
+          border-radius: 14px;
+          background: rgba(11,143,144,0.06);
+          color: rgba(11,143,144,0.74);
+          font-size: 0.86rem;
+          line-height: 1.55;
+        }
+
+        .package-pricing-note {
+          color: rgba(246,240,230,0.74);
+          line-height: 1.6;
+          font-size: 0.95rem;
+          max-width: 82ch;
         }
 
         /* ── FAQ ───────────────────────────────────────────────── */
@@ -1049,9 +1139,9 @@ export default function App() {
                 </div>
 
                 <h1 className="hero-title">
-                  <span className="line">Bridging strong impact</span>
-                  <span className="line">ventures with</span>
-                  <span className="line">the right capital.</span>
+                  <span className="line">Bridging strong</span>
+                  <span className="line">impact ventures</span>
+                  <span className="line">with the right capital.</span>
                 </h1>
 
                 <p className="lead">
@@ -1220,8 +1310,8 @@ export default function App() {
           <div className="wrap stack">
             <SectionTitle
               eyebrow="Packages"
-              title="How we can work together"
-              text="Three clear starting points — each adapted to where you actually are in your fundraising journey."
+              title="Choose the right starting point"
+              text="Two offers can be bought directly. The ongoing advisory package starts with a free intro call and, if there is a fit, a small onboarding deposit that is credited against the first month."
             />
             <div className="packages-grid">
               {packages.map((pkg) => {
@@ -1235,6 +1325,10 @@ export default function App() {
                       </div>
                       <Icon size={22} />
                     </div>
+
+                    <div className="package-price">{pkg.price}</div>
+                    <p className="package-body">{pkg.body}</p>
+
                     <div className="package-items">
                       {pkg.items.map((item) => (
                         <div key={item} className="package-item">
@@ -1243,10 +1337,32 @@ export default function App() {
                         </div>
                       ))}
                     </div>
+
+                    <div className="package-actions">
+                      <a
+                        className="button button-cream-primary"
+                        href={pkg.ctaHref}
+                        target={pkg.ctaHref.startsWith('http') ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                      >
+                        {pkg.ctaLabel}
+                      </a>
+                      <a
+                        className="button button-cream-secondary"
+                        href={pkg.secondaryHref}
+                        target={pkg.secondaryHref.startsWith('http') ? '_blank' : undefined}
+                        rel="noopener noreferrer"
+                      >
+                        {pkg.secondaryLabel}
+                      </a>
+                    </div>
+
+                    <div className="package-note">{pkg.note}</div>
                   </Card>
                 )
               })}
             </div>
+            <p className="package-pricing-note">{packagePricingNote}</p>
           </div>
         </section>
 
