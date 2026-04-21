@@ -180,8 +180,12 @@ export default function App() {
       <div className="background-glow" />
 
       <style>{`
+        :root {
+          --header-offset: 108px;
+        }
+
         html {
-          scroll-padding-top: 118px;
+          scroll-padding-top: var(--header-offset);
         }
 
         #home,
@@ -192,13 +196,20 @@ export default function App() {
         #faq,
         #contact,
         #impressum {
-          scroll-margin-top: 118px;
+          scroll-margin-top: var(--header-offset);
         }
 
         .topbar {
-          position: sticky;
+          position: fixed;
           top: 0;
-          z-index: 50;
+          left: 0;
+          right: 0;
+          width: 100%;
+          z-index: 999;
+        }
+
+        main {
+          padding-top: var(--header-offset);
         }
 
         .nav {
@@ -211,6 +222,10 @@ export default function App() {
         }
 
         @media (max-width: 760px) {
+          :root {
+            --header-offset: 148px;
+          }
+
           .topbar-inner {
             display: grid;
             gap: 14px;
@@ -223,6 +238,10 @@ export default function App() {
             padding-bottom: 4px;
             font-size: 0.92rem;
             scrollbar-width: none;
+          }
+
+          main {
+            padding-top: var(--header-offset);
           }
 
           .nav::-webkit-scrollbar {
