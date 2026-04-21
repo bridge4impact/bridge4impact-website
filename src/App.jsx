@@ -179,9 +179,61 @@ export default function App() {
     <div className="site-shell">
       <div className="background-glow" />
 
+      <style>{`
+        html {
+          scroll-padding-top: 118px;
+        }
+
+        #home,
+        #services,
+        #readiness,
+        #about,
+        #packages,
+        #faq,
+        #contact,
+        #impressum {
+          scroll-margin-top: 118px;
+        }
+
+        .topbar {
+          position: sticky;
+          top: 0;
+          z-index: 50;
+        }
+
+        .nav {
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .nav a {
+          white-space: nowrap;
+        }
+
+        @media (max-width: 760px) {
+          .topbar-inner {
+            display: grid;
+            gap: 14px;
+          }
+
+          .nav {
+            display: flex !important;
+            gap: 18px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            font-size: 0.92rem;
+            scrollbar-width: none;
+          }
+
+          .nav::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      `}</style>
+
       <header className="topbar">
         <div className="container topbar-inner">
-          <a href="#top" className="brand">
+          <a href="#home" className="brand">
             <img src="/logo.png" alt="Bridge4Impact logo" className="brand-logo" />
             <div>
               <div className="brand-title">Bridge4Impact</div>
@@ -190,6 +242,7 @@ export default function App() {
           </a>
 
           <nav className="nav">
+            <a href="#home">Home</a>
             <a href="#services">Services</a>
             <a href="#readiness">Readiness Check</a>
             <a href="#about">About</a>
@@ -200,8 +253,8 @@ export default function App() {
         </div>
       </header>
 
-      <main id="top">
-        <section className="hero section">
+      <main>
+        <section id="home" className="hero section">
           <div className="container hero-grid">
             <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="pill">
