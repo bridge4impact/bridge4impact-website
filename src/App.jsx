@@ -17,6 +17,7 @@ import {
   Building2,
   BadgeEuro,
   LineChart,
+  Phone,
 } from 'lucide-react'
 
 const services = [
@@ -66,21 +67,6 @@ const readinessSteps = [
   },
 ]
 
-const audiences = [
-  {
-    title: 'Impact Startups',
-    text: 'For founders who want honest feedback, stronger materials, and better-fit investor outreach before wasting time on low-probability conversations.',
-  },
-  {
-    title: 'Venture Funds',
-    text: 'For GPs who need sharper positioning, curated LP targeting, and support with thoughtful, high-quality fundraising processes.',
-  },
-  {
-    title: 'Ecosystem Partners',
-    text: 'For accelerators, advisors, and international partners who want a practical fundraising specialist to complement their own expertise.',
-  },
-]
-
 const packages = [
   {
     title: 'Readiness Sprint',
@@ -124,7 +110,7 @@ const useCases = [
   },
   {
     title: 'Investor shortlist refinement',
-    text: 'Useful when a company already has a broad list but needs a more realistic shortlist by geography, stage, sector, and ticket size.',
+    text: 'Useful when the company already has a broad list but needs a more realistic shortlist by geography, stage, sector, and ticket size.',
   },
   {
     title: 'Hands-on support during a live raise',
@@ -181,11 +167,11 @@ export default function App() {
 
       <style>{`
         :root {
-          --header-offset: 108px;
+          --header-offset: 88px;
         }
 
         html {
-          scroll-padding-top: var(--header-offset);
+          scroll-padding-top: calc(var(--header-offset) + 8px);
         }
 
         #home,
@@ -196,7 +182,11 @@ export default function App() {
         #faq,
         #contact,
         #impressum {
-          scroll-margin-top: var(--header-offset);
+          scroll-margin-top: calc(var(--header-offset) + 8px);
+        }
+
+        .container {
+          width: min(1360px, calc(100% - 64px));
         }
 
         .topbar {
@@ -206,46 +196,288 @@ export default function App() {
           right: 0;
           width: 100%;
           z-index: 999;
+          border-bottom: 1px solid rgba(255,255,255,0.12);
+          backdrop-filter: blur(16px);
+          background: rgba(8, 120, 121, 0.72);
         }
 
-        main {
-          padding-top: var(--header-offset);
+        .topbar-inner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 24px;
+          padding: 12px 0;
         }
 
         .nav {
+          display: flex;
           align-items: center;
+          gap: 22px;
           flex-wrap: wrap;
+          font-size: 1rem;
         }
 
         .nav a {
           white-space: nowrap;
         }
 
-        @media (max-width: 760px) {
+        .brand-logo {
+          width: 56px;
+          height: 56px;
+        }
+
+        .brand-title {
+          font-size: 1.18rem;
+        }
+
+        .brand-subtitle {
+          font-size: 0.78rem;
+        }
+
+        main {
+          padding-top: var(--header-offset);
+        }
+
+        .section {
+          padding: 18px 0 54px;
+        }
+
+        .hero {
+          padding: 14px 0 42px;
+        }
+
+        .hero-grid {
+          min-height: calc(100vh - var(--header-offset) - 24px);
+          align-items: center;
+          grid-template-columns: 1.02fr 0.98fr;
+          gap: 30px;
+        }
+
+        .pill {
+          margin-top: 0;
+        }
+
+        .hero h1 {
+          font-size: clamp(3.1rem, 7vw, 5.8rem);
+          max-width: 9.8ch;
+          margin-top: 16px;
+          margin-bottom: 18px;
+        }
+
+        .lead {
+          max-width: 48rem;
+        }
+
+        .sublead {
+          max-width: 50rem;
+        }
+
+        .hero-actions {
+          margin-top: 24px;
+        }
+
+        .section-title {
+          max-width: 64rem;
+          margin-bottom: 22px;
+        }
+
+        .section-title h2 {
+          font-size: clamp(2.2rem, 4.8vw, 4.2rem);
+        }
+
+        .grid-four {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .split-grid.about-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .about-card {
+          padding: 34px;
+        }
+
+        .about-card-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+          gap: 26px;
+          align-items: start;
+        }
+
+        .about-copy p + p {
+          margin-top: 14px;
+        }
+
+        .about-proof {
+          display: grid;
+          gap: 14px;
+        }
+
+        .small-feature h3,
+        .service-card h3,
+        .package-card h3 {
+          line-height: 1.25;
+        }
+
+        .legal-grid {
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 18px;
+        }
+
+        .legal-text p {
+          margin: 0 0 14px;
+        }
+
+        .legal-list {
+          display: grid;
+          gap: 8px;
+          margin-top: 10px;
+        }
+
+        .legal-list div {
+          line-height: 1.6;
+        }
+
+        .legal-note {
+          margin-top: 16px;
+          padding: 14px 16px;
+          border-radius: 18px;
+          background: rgba(11, 143, 144, 0.06);
+          color: rgba(11, 143, 144, 0.82);
+          line-height: 1.6;
+        }
+
+        @media (max-width: 1280px) {
+          .container {
+            width: min(1280px, calc(100% - 48px));
+          }
+
+          .grid-four {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+
+          .about-card-grid,
+          .legal-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 1080px) {
           :root {
-            --header-offset: 148px;
+            --header-offset: 132px;
           }
 
           .topbar-inner {
             display: grid;
-            gap: 14px;
+            gap: 12px;
           }
 
           .nav {
             display: flex !important;
             gap: 18px;
             overflow-x: auto;
-            padding-bottom: 4px;
-            font-size: 0.92rem;
+            padding-bottom: 2px;
+            flex-wrap: nowrap;
             scrollbar-width: none;
-          }
-
-          main {
-            padding-top: var(--header-offset);
           }
 
           .nav::-webkit-scrollbar {
             display: none;
+          }
+
+          .hero-grid,
+          .split-grid,
+          .split-faq,
+          .contact-split {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-grid {
+            min-height: auto;
+            align-items: start;
+          }
+
+          .grid-three {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 760px) {
+          :root {
+            --header-offset: 126px;
+          }
+
+          .container {
+            width: min(100% - 20px, 1360px);
+          }
+
+          .section {
+            padding: 14px 0 34px;
+          }
+
+          .hero {
+            padding: 8px 0 28px;
+          }
+
+          .hero h1 {
+            font-size: clamp(2.65rem, 13vw, 4.3rem);
+            max-width: none;
+          }
+
+          .lead {
+            font-size: 1.08rem;
+            line-height: 1.65;
+          }
+
+          .sublead,
+          .section-title p,
+          .service-card p,
+          .faq-card p,
+          .small-feature p,
+          .legal-text,
+          .paper p,
+          .contact-card p {
+            line-height: 1.62;
+          }
+
+          .grid-two,
+          .grid-three,
+          .grid-four,
+          .about-card-grid,
+          .legal-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .card,
+          .contact-card,
+          .about-card {
+            padding: 22px;
+            border-radius: 24px;
+          }
+
+          .button {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .brand {
+            gap: 10px;
+          }
+
+          .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+          }
+
+          .brand-title {
+            font-size: 1rem;
+          }
+
+          .brand-subtitle {
+            font-size: 0.68rem;
+            letter-spacing: 0.16em;
           }
         }
       `}</style>
@@ -392,33 +624,28 @@ export default function App() {
         </section>
 
         <section id="about" className="section">
-          <div className="container split-grid">
-            <Card className="paper">
-              <div className="card-heading-small dark">Who this is for</div>
-              <h2>Built for focused, mission-driven fundraising</h2>
-              <div className="stack-large">
-                {audiences.map((item) => (
-                  <div key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
-
-            <Card className="glass">
+          <div className="container split-grid about-grid">
+            <Card className="glass about-card">
               <div className="card-heading-small">About</div>
-              <h2>Independent fundraising support with an ecosystem mindset</h2>
-              <p>
-                Bridge4Impact by Günter Schmittberger: independent fundraiser, ecosystem enabler, and advisor supporting impact-oriented startups and venture funds.
-              </p>
-              <p>
-                The advisory style is independent, practical, and collaborative, with a strong focus on impact-oriented startups, venture funds, and mission-driven capital. International partnerships can add specialized expertise where needed.
-              </p>
-              <div className="grid-two checklist-grid">
-                {proofPoints.map((point) => (
-                  <div key={point} className="check-item"><CheckCircle2 size={16} />{point}</div>
-                ))}
+              <div className="about-card-grid">
+                <div className="about-copy">
+                  <h2>Independent fundraising support with an ecosystem mindset</h2>
+                  <p>
+                    Bridge4Impact by Günter Schmittberger: independent fundraiser, ecosystem enabler, and advisor supporting impact-oriented startups and venture funds.
+                  </p>
+                  <p>
+                    The advisory style is independent, practical, and collaborative, with a strong focus on impact-oriented startups, venture funds, and mission-driven capital. International partnerships can add specialized expertise where needed.
+                  </p>
+                  <p>
+                    Instead of pushing every company into outreach too early, the goal is to strengthen quality first—then focus on the investors most likely to care.
+                  </p>
+                </div>
+
+                <div className="about-proof">
+                  {proofPoints.map((point) => (
+                    <div key={point} className="check-item"><CheckCircle2 size={16} />{point}</div>
+                  ))}
+                </div>
               </div>
             </Card>
           </div>
@@ -524,22 +751,36 @@ export default function App() {
         </section>
 
         <section id="impressum" className="section legal-section">
-          <div className="container grid-two">
-            <Card className="glass legal-card">
-              <div className="card-heading-small">Impressum</div>
-              <h2>Legal notice</h2>
+          <div className="container legal-grid">
+            <Card className="paper legal-card">
+              <div className="card-heading-small dark">Impressum</div>
+              <h2>Impressum</h2>
               <div className="legal-text">
                 <p><strong>Angaben gemäß § 5 DDG</strong></p>
+                <div className="legal-list">
+                  <div><strong>Anbieter:</strong> Guenter Schmittberger</div>
+                  <div><strong>Öffentlicher Markenauftritt:</strong> Bridge4Impact by Günter Schmittberger</div>
+                  <div><strong>Anschrift:</strong> Gonsbachblick 33, 55122 Mainz, Deutschland</div>
+                  <div><strong>E-Mail:</strong> <a href="mailto:guenter@bridge4impact.com">guenter@bridge4impact.com</a></div>
+                  <div><strong>Telefon:</strong> bitte ergänzen, sofern öffentlich gewünscht</div>
+                </div>
+
+                <p><strong>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</strong></p>
                 <p>
                   Guenter Schmittberger<br />
                   Gonsbachblick 33<br />
                   55122 Mainz<br />
-                  Germany
+                  Deutschland
                 </p>
+
+                <p><strong>Verbraucherstreitbeilegung</strong></p>
                 <p>
-                  E-Mail: <a href="mailto:guenter@bridge4impact.com">guenter@bridge4impact.com</a>
+                  Es besteht keine Verpflichtung und keine generelle Bereitschaft zur Teilnahme an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle, soweit nicht im Einzelfall ausdrücklich etwas anderes vereinbart wird.
                 </p>
-                <p>Public-facing brand: Bridge4Impact by Günter Schmittberger</p>
+
+                <div className="legal-note">
+                  Für eine rechtlich belastbare Endfassung solltest du noch prüfen, ob zusätzlich eine öffentlich angegebene Telefonnummer, eine Umsatzsteuer-Identifikationsnummer, Handelsregisterangaben oder berufsrechtliche Pflichtangaben erforderlich sind. Ohne diese Informationen kann ich keine vollständige rechtliche Prüfung ersetzen.
+                </div>
               </div>
             </Card>
 
@@ -548,10 +789,10 @@ export default function App() {
               <h2>Privacy notice placeholder</h2>
               <div className="legal-text">
                 <p>
-                  This starter version includes a basic privacy placeholder only. The final Datenschutz text should be adapted to the actual setup you choose, for example hosting, analytics, embedded content, fonts, forms, and email handling.
+                  This starter version includes a basic privacy placeholder only. The final Datenschutz text should be adapted to the actual live setup, for example hosting, analytics, embedded content, fonts, scheduling links, and email handling.
                 </p>
                 <p>
-                  For the first minimal version, the safest route is to avoid unnecessary tracking tools, cookie banners, external embeds, and contact forms until the legal text is finalized.
+                  For the current minimal version, the safest route is still to avoid unnecessary tracking tools, cookie banners, external embeds, and extra form tools until the legal text is finalized.
                 </p>
               </div>
             </Card>
@@ -562,7 +803,7 @@ export default function App() {
       <footer className="footer">
         <div className="container footer-inner">
           <div>© Bridge4Impact by Günter Schmittberger — Fundraising advisory for impact startups and venture funds</div>
-          <div>Suggested pages: Home · Services · Readiness Check · About · FAQ · Contact · Impressum · Datenschutz</div>
+          <div>Home · Services · Readiness Check · About · Packages · FAQ · Contact · Impressum · Datenschutz</div>
         </div>
       </footer>
     </div>
