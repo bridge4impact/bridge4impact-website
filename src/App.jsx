@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React from 'react'
 import {
   ArrowLeft,
   ArrowRight,
@@ -21,88 +21,97 @@ import {
 const CALENDLY_LINK = 'https://calendly.com/g-schmittberger'
 const UNBIASED_LINK = 'https://www.unbiasedventures.ch/'
 const DRISK_LINK = 'https://dri.ai/drisk-it'
-const EQUISY_LINK = 'https://equisy.io/'
-
 
 const AFFILIATIONS = {
   memberships: [
     {
       key: 'bvii',
-      title: 'Bundesverband Impact Investing',
-      subtitle: 'Membership',
-      description: 'German impact investing association focused on promoting impact investing, knowledge-building, partnerships, and suitable framework conditions.',
+      title: 'Bundesinitiative Impact Investing',
+      subtitle: 'Mitgliedschaft',
+      description:
+        'German Association for Impact Investing focused on mobilising capital for impact, strengthening the ecosystem, and improving framework conditions.',
       href: 'https://bundesinitiative-impact-investing.org/en/',
-      previewHref: 'https://bundesinitiative-impact-investing.org/en/',
-      source: 'turn656799view0',
     },
     {
       key: 'tti',
       title: 'Top Tier Impact',
       subtitle: 'Ambassador for the Frankfurt Area',
-      description: 'Global ecosystem of investors, entrepreneurs, and corporate leaders with a private network, investing activity, and advisory work.',
+      description:
+        'Global ecosystem of investors, entrepreneurs, and corporate leaders with a private network, investing activity, and advisory work.',
       href: 'https://www.toptierimpact.com/',
-      previewHref: 'https://www.toptierimpact.com/',
-      source: 'turn656799view1',
     },
     {
       key: 'catalyst',
       title: 'Catalyst Now',
-      subtitle: 'Member',
-      description: 'Global movement and collaboration platform for social innovators and systems-change actors.',
+      subtitle: 'Mitglied',
+      description:
+        'Global movement and collaboration platform for social innovators and systems-change actors.',
       href: 'https://catalystnow.net/',
-      previewHref: 'https://catalystnow.net/',
-      source: 'turn420819view0',
     },
   ],
-  partners: [
+  partnerships: [
     {
       key: 'csg',
       title: 'capitalism & the social good group',
       subtitle: 'Selected partnership',
-      description: 'Advisory group focused on innovation, sustainability, and stakeholder-oriented value creation.',
+      description:
+        'Advisory collaboration focused on innovation, sustainability, and stakeholder-oriented value creation.',
       href: 'https://www.csg-group.org/',
-      previewHref: 'https://www.csg-group.org/',
       personName: 'Diane Kaldany',
       personHref: 'https://www.linkedin.com/in/dianekaldany/',
-      source: 'turn420819view1',
     },
     {
       key: 'tbs',
       title: 'Transnational Business Solutions',
       subtitle: 'Selected partnership',
-      description: 'Cross-border business and advisory collaboration associated with Sumantra Sen.',
+      description:
+        'Cross-border business and advisory collaboration associated with Sumantra Sen.',
       href: 'https://www.transbizsolution.com/',
-      previewHref: 'https://www.transbizsolution.com/',
       personName: 'Sumantra Sen',
       personHref: 'https://www.linkedin.com/in/sumantra63/',
-      source: '',
     },
     {
       key: 'umergence',
       title: 'Umergence',
       subtitle: 'Selected partnership',
-      description: 'Capital raising and advisory platform with a seasoned team active across private capital relationships.',
+      description:
+        'Capital raising and advisory platform with an experienced team active across private capital relationships.',
       href: 'https://www.umergence.com/',
-      previewHref: 'https://www.umergence.com/',
       personName: 'Will Hogan',
       personHref: 'https://www.linkedin.com/in/willhogan/',
-      source: 'turn420819view2',
     },
     {
       key: 'bonomics',
       title: 'Bonomics',
       subtitle: 'Selected partnership',
-      description: 'Strategic finance and fractional CFO-style advisory focused on clarity, growth, and decision support.',
+      description:
+        'Strategic finance and fractional CFO-style advisory focused on clarity, growth, and decision support.',
       href: 'https://bonomics.wixsite.com/bonomics',
-      previewHref: 'https://bonomics.wixsite.com/bonomics',
       personName: 'René Bonomi',
       personHref: 'https://www.linkedin.com/in/renebonomi/',
-      source: 'turn420819view3',
     },
   ],
 }
 
-const EMBED_NOTE = 'Some external sites — especially LinkedIn and some company sites — may block in-site preview windows because of their security settings. In that case, use the direct link.'
+const AFFILIATION_PAGES = {
+  memberships: {
+    eyebrow: 'Memberships',
+    title: 'Memberships and ecosystem roles',
+    intro:
+      'These memberships and ambassador roles help signal ecosystem access, long-term involvement, and a serious positioning within the impact and venture fundraising landscape.',
+    items: AFFILIATIONS.memberships,
+    backHref: '/#about',
+  },
+  partnerships: {
+    eyebrow: 'Selected partnerships',
+    title: 'Selected partnerships and collaboration network',
+    intro:
+      'These selected partnerships help extend geographic reach, sector perspective, and execution support across different fundraising situations.',
+    items: AFFILIATIONS.partnerships,
+    backHref: '/#about',
+  },
+}
+
 
 // Replace these after you create the Stripe payment links.
 const STRIPE_LINKS = {
@@ -322,12 +331,13 @@ function Logo() {
 }
 
 export default function App() {
-  const packageKey = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('package') : null
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
+  const packageKey = params ? params.get('package') : null
   const packagePage = packageKey ? packageDetails[packageKey] : null
+  const networkKey = params ? params.get('network') : null
+  const networkPage = networkKey ? AFFILIATION_PAGES[networkKey] : null
   const rootPath = typeof window !== 'undefined' ? window.location.pathname || '/' : '/'
   const homeHref = (hash = '') => `${rootPath}${hash}`
-  const [previewItem, setPreviewItem] = useState(null)
-  const allAffiliations = useMemo(() => [...AFFILIATIONS.memberships, ...AFFILIATIONS.partners], [])
 
   return (
     <div className="site-shell">
@@ -346,7 +356,7 @@ export default function App() {
           --max-w: 1440px;
           --gutter: 28px;
           --section-bottom: 36px;
-          --section-top: 8px;
+          --section-top: 10px;
           --gap: 18px;
         }
 
@@ -355,7 +365,7 @@ export default function App() {
           margin: 0;
           padding: 0;
           scroll-behavior: smooth;
-          scroll-padding-top: var(--header-h);
+          scroll-padding-top: calc(var(--header-h) + 8px);
         }
         body {
           margin: 0;
@@ -445,7 +455,7 @@ export default function App() {
           z-index: 1;
           padding-top: var(--header-h);
         }
-        section[id] { scroll-margin-top: var(--header-h); }
+        section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
         .page-section {
           min-height: calc(100svh - var(--header-h));
           padding: var(--section-top) 0 var(--section-bottom);
@@ -533,7 +543,7 @@ export default function App() {
         }
         .hero-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
           gap: 28px;
           align-items: start;
         }
@@ -543,17 +553,16 @@ export default function App() {
         }
         .hero-title {
           font-size: clamp(3.2rem, 5.6vw, 6rem);
-          line-height: 0.92;
+          line-height: 0.93;
           letter-spacing: -0.06em;
-          max-width: none;
+          max-width: 12ch;
         }
         .hero-title .line { display: block; }
-        .hero-title .line.small { font-size: 0.76em; line-height: 0.94; }
         .lead {
-          font-size: 1rem;
-          line-height: 1.55;
+          font-size: 1.14rem;
+          line-height: 1.6;
           color: rgba(246,240,230,0.86);
-          max-width: none;
+          max-width: 48rem;
         }
         .sublead {
           font-size: 1rem;
@@ -757,9 +766,8 @@ export default function App() {
           font-size: clamp(1.8rem, 3vw, 2.8rem);
           line-height: 1.06;
           letter-spacing: -0.04em;
-          max-width: none;
+          max-width: 16ch;
         }
-        .about-card h2 .line { display: block; }
         .about-card h3 {
           margin: 10px 0 18px;
           font-size: 1.28rem;
@@ -786,6 +794,69 @@ export default function App() {
           color: rgba(246,240,230,0.88);
           font-size: 0.92rem;
           line-height: 1.5;
+        }
+
+        .about-network {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 20px;
+        }
+        .about-network-card { padding: 28px; }
+        .about-network-card h3 {
+          margin: 10px 0 12px;
+          font-size: 1.32rem;
+          line-height: 1.18;
+          letter-spacing: -0.03em;
+        }
+        .about-network-card p {
+          margin: 0 0 16px;
+          color: rgba(246,240,230,0.78);
+          line-height: 1.6;
+        }
+        .about-network-list {
+          display: grid;
+          gap: 10px;
+          margin-bottom: 18px;
+        }
+        .about-network-list div {
+          display: flex;
+          align-items: flex-start;
+          gap: 9px;
+          color: rgba(246,240,230,0.9);
+          line-height: 1.5;
+        }
+        .network-detail-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: var(--gap);
+        }
+        .network-detail-card { padding: 24px; }
+        .network-detail-card h3 {
+          margin: 10px 0 10px;
+          font-size: 1.2rem;
+          line-height: 1.2;
+          letter-spacing: -0.03em;
+        }
+        .network-detail-card p {
+          color: rgba(246,240,230,0.8);
+          line-height: 1.62;
+          margin: 0 0 16px;
+        }
+        .network-tag {
+          display: inline-flex;
+          width: fit-content;
+          border-radius: 999px;
+          padding: 7px 10px;
+          background: rgba(255,255,255,0.08);
+          color: rgba(246,240,230,0.82);
+          font-size: 0.8rem;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        .network-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
         }
         .legal-grid {
           display: grid;
@@ -843,6 +914,8 @@ export default function App() {
           .hero-grid,
           .detail-grid,
           .about-grid,
+          .about-network,
+          .network-detail-grid,
           .legal-grid {
             grid-template-columns: 1fr;
           }
@@ -889,11 +962,10 @@ export default function App() {
           :root {
             --header-h: 116px;
             --gutter: 14px;
-            --section-top: 8px;
+            --section-top: 10px;
             --section-bottom: 34px;
           }
-          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: none; }
-          .hero-title .line.small { font-size: 0.84em; }
+          .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: 11ch; }
           .lead { font-size: 1rem; }
           .button { width: 100%; }
           .services-grid,
@@ -1010,6 +1082,45 @@ export default function App() {
               </div>
             </div>
           </section>
+        ) : networkPage ? (
+          <section className="page-section" id="network-detail">
+            <div className="wrap detail-shell">
+              <a href={networkPage.backHref} className="pill" style={{ width: 'fit-content' }}>
+                <ArrowLeft size={15} /> Back to About
+              </a>
+
+              <Card className="detail-card">
+                <div className="detail-top">
+                  <div>
+                    <div className="eyebrow">{networkPage.eyebrow}</div>
+                    <h1>{networkPage.title}</h1>
+                    <div className="detail-meta">
+                      <div>{networkPage.intro}</div>
+                    </div>
+                  </div>
+                  <Globe size={28} />
+                </div>
+              </Card>
+
+              <div className="network-detail-grid">
+                {networkPage.items.map((item) => (
+                  <Card key={item.key} className="network-detail-card">
+                    <div className="network-tag">{item.subtitle}</div>
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                    <div className="network-actions">
+                      <a className="button button-primary" href={item.href} target="_blank" rel="noopener noreferrer">Open site</a>
+                      {item.personHref ? (
+                        <a className="button button-secondary" href={item.personHref} target="_blank" rel="noopener noreferrer">
+                          Open {item.personName}
+                        </a>
+                      ) : null}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
         ) : (
           <>
             <section id="home" className="page-section">
@@ -1018,9 +1129,8 @@ export default function App() {
                   <div className="hero-copy">
                     <div className="pill"><Sparkles size={15} />Investment readiness first. Outreach second.</div>
                     <h1 className="hero-title">
-                      <span className="line">Bridging strong</span>
-                      <span className="line">impact ventures</span>
-                      <span className="line small">with the</span>
+                      <span className="line">Bridging strong impact</span>
+                      <span className="line">ventures with the</span>
                       <span className="line">right capital.</span>
                     </h1>
                     <p className="lead">
@@ -1094,16 +1204,6 @@ export default function App() {
                     )
                   })}
                 </div>
-                <Card className="readiness-card">
-                  <div>
-                    <BriefcaseBusiness size={24} />
-                    <h3>No data room yet?</h3>
-                    <p>If you do not yet have a structured data room, I recommend creating a paid account on Equisy before serious investor outreach.</p>
-                  </div>
-                  <div>
-                    <a className="button button-secondary" href={EQUISY_LINK} target="_blank" rel="noopener noreferrer">Open Equisy</a>
-                  </div>
-                </Card>
               </div>
             </section>
 
@@ -1143,51 +1243,35 @@ export default function App() {
                     </div>
                   </Card>
                 </div>
-              </div>
-            </section>
 
+                <div className="about-network">
+                  <Card className="about-network-card">
+                    <div className="eyebrow">Memberships</div>
+                    <h3>Memberships and ambassador roles</h3>
+                    <p>These roles underline long-term ecosystem engagement and help explain where Bridge4Impact is active within the impact investing and venture landscape.</p>
+                    <div className="about-network-list">
+                      {AFFILIATIONS.memberships.map((item) => (
+                        <div key={item.key}><CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: 2 }} /><span><strong>{item.title}</strong> — {item.subtitle}</span></div>
+                      ))}
+                    </div>
+                    <div className="network-actions">
+                      <a className="button button-primary" href={`${rootPath}?network=memberships`}>View memberships</a>
+                    </div>
+                  </Card>
 
-
-            <section id="network" className="page-section">
-              <div className="wrap stack">
-                <SectionTitle eyebrow="Memberships & selected partnerships" title="Credibility, network access, and aligned collaboration" text="These memberships and selected partnerships strengthen positioning, signal ecosystem access, and help explain the broader context in which Bridge4Impact operates." />
-                <p className="network-note">
-                  My recommendation is to present them in two clearly separated groups: memberships and selected partnerships. That keeps the message credible and avoids any impression that every organization is formally endorsing every service on this site. Some external sites can be previewed inside the website window; others may block this for security reasons.
-                </p>
-
-                <div className="network-grid">
-                  <h3 className="network-subtitle">Memberships</h3>
-                  <div className="network-cards">
-                    {AFFILIATIONS.memberships.map((item) => (
-                      <Card key={item.key} className="network-card">
-                        <div className="network-tag">{item.subtitle}</div>
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                        <div className="network-actions">
-                          <button className="button button-secondary" type="button" onClick={() => setPreviewItem(item)}>View in website window</button>
-                          <a className="button button-primary" href={item.href} target="_blank" rel="noopener noreferrer">Open site</a>
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="network-grid">
-                  <h3 className="network-subtitle">Selected partnerships</h3>
-                  <div className="network-cards">
-                    {AFFILIATIONS.partners.map((item) => (
-                      <Card key={item.key} className="network-card">
-                        <div className="network-tag">{item.subtitle}</div>
-                        <h3>{item.title}</h3>
-                        <p>{item.description}</p>
-                        <div className="network-actions">
-                          <button className="button button-secondary" type="button" onClick={() => setPreviewItem(item)}>View in website window</button>
-                          <a className="button button-primary" href={item.href} target="_blank" rel="noopener noreferrer">Open site</a>
-                          {item.personHref ? <a className="button button-secondary" href={item.personHref} target="_blank" rel="noopener noreferrer">Open {item.personName}</a> : null}
-                        </div>
-                      </Card>
-                    ))}
-                  </div>
+                  <Card className="about-network-card">
+                    <div className="eyebrow">Selected partnerships</div>
+                    <h3>Selected partnerships and collaboration network</h3>
+                    <p>These selected partnerships extend sector perspective, cross-border reach, and execution support across different fundraising situations.</p>
+                    <div className="about-network-list">
+                      {AFFILIATIONS.partnerships.map((item) => (
+                        <div key={item.key}><CheckCircle2 size={16} style={{ flexShrink: 0, marginTop: 2 }} /><span><strong>{item.title}</strong>{item.personName ? ` — ${item.personName}` : ''}</span></div>
+                      ))}
+                    </div>
+                    <div className="network-actions">
+                      <a className="button button-primary" href={`${rootPath}?network=partnerships`}>View selected partnerships</a>
+                    </div>
+                  </Card>
                 </div>
               </div>
             </section>
@@ -1380,37 +1464,6 @@ export default function App() {
             </section>
           </>
         )}
-
-          {previewItem ? (
-            <div className="preview-backdrop" role="dialog" aria-modal="true" aria-label={previewItem.title} onClick={() => setPreviewItem(null)}>
-              <div className="preview-dialog" onClick={(e) => e.stopPropagation()}>
-                <div className="preview-head">
-                  <div>
-                    <div className="eyebrow">Preview window</div>
-                    <h3>{previewItem.title}</h3>
-                  </div>
-                  <button className="button button-secondary" type="button" onClick={() => setPreviewItem(null)}>
-                    <ArrowLeft size={18} /> Close
-                  </button>
-                </div>
-                <div className="preview-body">
-                  <div className="preview-side">
-                    <div className="network-tag">{previewItem.subtitle}</div>
-                    <p>{previewItem.description}</p>
-                    <p>{EMBED_NOTE}</p>
-                    <div className="network-actions">
-                      <a className="button button-primary" href={previewItem.href} target="_blank" rel="noopener noreferrer">Open original site</a>
-                      {previewItem.personHref ? <a className="button button-secondary" href={previewItem.personHref} target="_blank" rel="noopener noreferrer">Open {previewItem.personName}</a> : null}
-                    </div>
-                  </div>
-                  <div className="preview-frame-wrap">
-                    {previewItem.previewHref ? <iframe className="preview-frame" title={previewItem.title} src={previewItem.previewHref} /> : <div className="preview-fallback">This item does not have an embeddable preview link configured. Use the direct links on the left.</div>}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : null}
-
       </main>
 
       <footer className="footer">
