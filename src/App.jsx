@@ -355,8 +355,7 @@ export default function App() {
           --header-h: 84px;
           --max-w: 1440px;
           --gutter: 28px;
-          --section-bottom: 36px;
-          --section-top: 10px;
+          --section-py: 72px;
           --gap: 18px;
         }
 
@@ -457,10 +456,11 @@ export default function App() {
         }
         section[id] { scroll-margin-top: calc(var(--header-h) + 8px); }
         .page-section {
-          min-height: calc(100svh - var(--header-h));
-          padding: var(--section-top) 0 var(--section-bottom);
-          display: flex;
-          align-items: flex-start;
+          padding: var(--section-py) 0;
+        }
+        /* Hero gets a little extra top room */
+        .page-section:first-of-type {
+          padding-top: calc(var(--section-py) * 1.2);
         }
         .stack { display: grid; gap: 24px; }
         .eyebrow {
@@ -629,6 +629,25 @@ export default function App() {
         }
         .services-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .readiness-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .band-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: var(--gap);
+        }
+        .band-card {
+          padding: 18px 20px;
+          border-radius: 18px;
+        }
+        .band-card h3 {
+          margin-bottom: 8px;
+          font-size: 1.1rem;
+          letter-spacing: -0.02em;
+        }
+        .band-card p {
+          font-size: 0.94rem;
+          line-height: 1.58;
+          color: rgba(246,240,230,0.76);
+        }
         .packages-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .service-card,
@@ -756,7 +775,7 @@ export default function App() {
         }
         .about-grid {
           display: grid;
-          grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
           gap: 20px;
           align-items: stretch;
         }
@@ -827,7 +846,7 @@ export default function App() {
         }
         .network-detail-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
           gap: var(--gap);
         }
         .network-detail-card { padding: 24px; }
@@ -857,6 +876,52 @@ export default function App() {
           display: flex;
           flex-wrap: wrap;
           gap: 10px;
+        }
+        .contact-wrap {
+          display: grid;
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+          gap: var(--gap);
+          align-items: stretch;
+        }
+        .contact-panels {
+          display: grid;
+          gap: 12px;
+          align-content: start;
+        }
+        .contact-panel {
+          display: block;
+          padding: 18px 20px;
+          border-radius: 18px;
+          background: #fff;
+          color: var(--text-dark);
+          border: 1px solid rgba(11,143,144,0.14);
+          transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .contact-panel:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+        }
+        .contact-title {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-weight: 700;
+          margin-bottom: 8px;
+          font-size: 1rem;
+        }
+        .contact-text {
+          color: rgba(11,143,144,0.72);
+          font-size: 0.93rem;
+          line-height: 1.5;
+        }
+        .info-box {
+          margin-top: 16px;
+          padding: 14px 16px;
+          border-radius: 14px;
+          background: rgba(11,143,144,0.07);
+          color: rgba(11,143,144,0.82);
+          line-height: 1.58;
+          font-size: 0.94rem;
         }
         .legal-grid {
           display: grid;
@@ -926,6 +991,7 @@ export default function App() {
           :root {
             --header-h: 108px;
             --gutter: 20px;
+            --section-py: 52px;
           }
           .topbar-inner {
             height: auto;
@@ -946,9 +1012,13 @@ export default function App() {
             width: 100%;
           }
           .nav::-webkit-scrollbar { display: none; }
+          .hero-grid,
+          .about-grid,
+          .contact-wrap { grid-template-columns: 1fr; }
           .services-grid,
-          .readiness-grid,
           .packages-grid,
+          .readiness-grid,
+          .band-grid,
           .faq-grid,
           .hero-mini-grid,
           .hero-stats,
@@ -962,14 +1032,14 @@ export default function App() {
           :root {
             --header-h: 116px;
             --gutter: 14px;
-            --section-top: 10px;
-            --section-bottom: 34px;
+            --section-py: 40px;
           }
           .hero-title { font-size: clamp(2.15rem, 10vw, 3.25rem); max-width: 11ch; }
           .lead { font-size: 1rem; }
           .button { width: 100%; }
           .services-grid,
           .readiness-grid,
+          .band-grid,
           .packages-grid,
           .faq-grid,
           .hero-mini-grid,
@@ -1129,9 +1199,9 @@ export default function App() {
                   <div className="hero-copy">
                     <div className="pill"><Sparkles size={15} />Investment readiness first. Outreach second.</div>
                     <h1 className="hero-title">
-                      <span className="line">Bridging strong impact</span>
-                      <span className="line">ventures with the</span>
-                      <span className="line">right capital.</span>
+                      <span className="line">Bridging strong</span>
+                      <span className="line">impact ventures</span>
+                      <span className="line">with the right capital.</span>
                     </h1>
                     <p className="lead">
                       Bridge4Impact helps impact startups and venture funds become more investment ready, reach better-fit investors, and run smarter fundraising processes.
@@ -1203,6 +1273,18 @@ export default function App() {
                       </Card>
                     )
                   })}
+                </div>
+                <div className="band-grid">
+                  {[
+                    { title: 'Above 80%', text: 'Usually a strong enough basis for a first serious fundraising discussion.' },
+                    { title: '65%–79%', text: 'Often a good basis for targeted readiness improvement before outreach.' },
+                    { title: 'Below 65%', text: 'In most cases, more preparation is advisable before active fundraising support would be efficient.' },
+                  ].map((band) => (
+                    <Card key={band.title} className="band-card">
+                      <h3>{band.title}</h3>
+                      <p>{band.text}</p>
+                    </Card>
+                  ))}
                 </div>
               </div>
             </section>
@@ -1278,7 +1360,7 @@ export default function App() {
 
             <section id="packages" className="page-section">
               <div className="wrap stack">
-                <SectionTitle eyebrow="Packages" title="Choose the right starting package" text="Start with a compact overview here. Each package also has its own dedicated detail page with fuller explanation, CTA, and payment logic." />
+                <SectionTitle eyebrow="Packages" title="Choose the right starting package" text="Three clear entry points — each adapted to where you actually are in your fundraising journey. Click any package for full details." />
                 <div className="packages-grid">
                   {packageOverview.map((pkg) => {
                     const Icon = pkg.icon
@@ -1333,24 +1415,32 @@ export default function App() {
 
             <section id="contact" className="page-section">
               <div className="wrap stack">
-                <Card className="cream legal-card">
-                  <div className="legal-copy">
-                    <div className="eyebrow">Next step</div>
-                    <h2>Ready to explore whether we are a fit?</h2>
-                    <p>Please complete the two readiness checks first and then send both reports by email to guenter@bridge4impact.com.</p>
-                    <div style={{ display: 'grid', gap: 12 }}>
-                      <a className="button button-cream-outline" href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
-                        <CalendarDays size={18} /> Book free intro call
-                      </a>
-                      <a className="button button-cream-outline" href="mailto:guenter@bridge4impact.com">
-                        <Mail size={18} /> Contact by email
-                      </a>
-                      <a className="button button-cream-outline" href="tel:+491752985215">
-                        <Phone size={18} /> Phone / WhatsApp: +49 175 298 5215
-                      </a>
+                <div className="contact-wrap">
+                  <Card className="cream legal-card">
+                    <div className="legal-copy">
+                      <div className="eyebrow">Next step</div>
+                      <h2>Ready to explore whether we are a fit?</h2>
+                      <p>Complete the two readiness checks first and send both reports to guenter@bridge4impact.com. After that, we can discuss your current fundraising status, your materials, and the type of investors you actually want to reach.</p>
+                      <div className="info-box">
+                        Early conversations are usually the most valuable ones — before time, effort, and reputation have been spent on the wrong approach.
+                      </div>
                     </div>
+                  </Card>
+                  <div className="contact-panels">
+                    <a className="contact-panel" href={CALENDLY_LINK} target="_blank" rel="noopener noreferrer">
+                      <div className="contact-title"><CalendarDays size={20} /><span>Book an intro call</span></div>
+                      <div className="contact-text">calendly.com/g-schmittberger</div>
+                    </a>
+                    <a className="contact-panel" href="mailto:guenter@bridge4impact.com">
+                      <div className="contact-title"><Mail size={20} /><span>Contact by email</span></div>
+                      <div className="contact-text">guenter@bridge4impact.com</div>
+                    </a>
+                    <a className="contact-panel" href="tel:+491752985215">
+                      <div className="contact-title"><Phone size={20} /><span>Phone / WhatsApp</span></div>
+                      <div className="contact-text">+49 175 298 5215</div>
+                    </a>
                   </div>
-                </Card>
+                </div>
               </div>
             </section>
 
